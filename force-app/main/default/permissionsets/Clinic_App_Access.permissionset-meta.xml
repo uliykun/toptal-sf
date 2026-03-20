@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Clinic App Access</label>
+    <description>Grants access to all Clinic Booking app features: Apex classes, LWC components, Contact record types, custom fields and Appointment object. Assign to any user who needs to use the booking system.</description>
+    <hasActivationRequired>false</hasActivationRequired>
+
+    <!-- ═══════════════════════════════════════════════
+         APEX CLASSES
+         Required for LWC @AuraEnabled method calls
+    ════════════════════════════════════════════════ -->
+    <classAccesses>
+        <apexClass>AppointmentController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>GoogleCalendarController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>GoogleCalendarControllerHelper</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>GoogleCalendarService</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>HttpUtils</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>Utils</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+
+    <!-- ═══════════════════════════════════════════════
+         FIELD PERMISSIONS
+         Note: required fields are auto-accessible — only
+         optional fields need explicit FLS grants
+    ════════════════════════════════════════════════ -->
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Appointment__c.Google_Calendar_Event_Id__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Appointment__c.Notes__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Contact.Google_Calendar_Id__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Contact.Specialization__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+
+    <!-- ═══════════════════════════════════════════════
+         OBJECT PERMISSIONS
+    ════════════════════════════════════════════════ -->
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>Appointment__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>Contact</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+
+    <!-- ═══════════════════════════════════════════════
+         CONTACT RECORD TYPES
+    ════════════════════════════════════════════════ -->
+    <recordTypeVisibilities>
+        <recordType>Contact.Doctor</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <recordType>Contact.Patient</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+
+</PermissionSet>

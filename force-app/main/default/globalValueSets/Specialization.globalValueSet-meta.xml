@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <masterLabel>Specialization</masterLabel>
+    <description>Medical specialization types for physician contacts</description>
+    <sorted>false</sorted>
+    <customValue>
+        <fullName>Cardiology</fullName>
+        <default>false</default>
+        <label>Cardiology</label>
+    </customValue>
+    <customValue>
+        <fullName>Endocrinology</fullName>
+        <default>false</default>
+        <label>Endocrinology</label>
+    </customValue>
+    <customValue>
+        <fullName>Rheumatology</fullName>
+        <default>false</default>
+        <label>Rheumatology</label>
+    </customValue>
+    <customValue>
+        <fullName>General_Practice</fullName>
+        <default>false</default>
+        <label>General Practice</label>
+    </customValue>
+</GlobalValueSet>

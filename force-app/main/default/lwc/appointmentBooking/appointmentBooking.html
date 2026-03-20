@@ -1,0 +1,109 @@
+<template>
+    <lightning-card title="Book an Appointment" icon-name="standard:event">
+        <div class="slds-p-around_medium">
+
+            <!-- ── Patient Search ──────────────────────────────────────── -->
+            <div class="slds-m-bottom_large">
+                <lightning-record-picker
+                    label="Patient"
+                    placeholder="Search for patient..."
+                    object-api-name="Contact"
+                    filter={patientFilter}
+                    onchange={handlePatientChange}
+                ></lightning-record-picker>
+            </div>
+
+            <hr class="slds-m-vertical_medium" />
+
+            <!-- ── Step 1: Specialization ──────────────────────────────── -->
+            <div class="slds-m-bottom_large">
+                <div class="step-label">
+                    <span class="step-badge">1</span>
+                    Select Specialization
+                </div>
+                <c-specialization-picker
+                    onspecializationselected={handleSpecializationSelected}
+                ></c-specialization-picker>
+            </div>
+
+            <!-- ── Step 2: Doctor ──────────────────────────────────────── -->
+            <template lwc:if={selectedSpecialization}>
+                <hr class="slds-m-vertical_medium" />
+                <div class="slds-m-bottom_large">
+                    <div class="step-label">
+                        <span class="step-badge">2</span>
+                        Select Doctor
+                        <span class="step-sub">— {selectedSpecializationLabel}</span>
+                    </div>
+                    <c-doctor-picker
+                        specialization={selectedSpecialization}
+                        ondoctorselected={handleDoctorSelected}
+                    ></c-doctor-picker>
+                </div>
+            </template>
+
+            <!-- ── Step 3: Time Slot ───────────────────────────────────── -->
+            <template lwc:if={selectedCalendarId}>
+                <hr class="slds-m-vertical_medium" />
+                <div class="slds-m-bottom_large">
+                    <div class="step-label">
+                        <span class="step-badge">3</span>
+                        Select Date &amp; Time
+                        <span class="step-sub">— {selectedDoctorName}</span>
+                    </div>
+                    <c-doctor-time-slots
+                        calendar-id={selectedCalendarId}
+                        time-zone={timeZone}
+                        onslotselected={handleSlotSelected}
+                    ></c-doctor-time-slots>
+                </div>
+            </template>
+
+            <!-- ── Booking Summary ─────────────────────────────────────── -->
+            <template lwc:if={showBookingSummary}>
+                <hr class="slds-m-vertical_medium" />
+                <div class="booking-summary">
+                    <p class="summary-title">Booking Summary</p>
+                    <div class="summary-grid">
+                        <div class="summary-row">
+                            <span class="summary-label">Patient</span>
+                            <span class="summary-value">{selectedPatientName}</span>
+                        </div>
+                        <div class="summary-row">
+                            <span class="summary-label">Specialization</span>
+                            <span class="summary-value">{selectedSpecializationLabel}</span>
+                        </div>
+                        <div class="summary-row">
+                            <span class="summary-label">Doctor</span>
+                            <span class="summary-value">{selectedDoctorName}</span>
+                        </div>
+                        <div class="summary-row">
+                            <span class="summary-label">Date &amp; Time</span>
+                            <span class="summary-value">{bookingDateTimeLabel}</span>
+                        </div>
+                        <div class="summary-row">
+                            <span class="summary-label">Price</span>
+                            <span class="summary-value summary-price">£{selectedPriceFormatted}</span>
+                        </div>
+                    </div>
+
+                    <template lwc:if={noPatientSelected}>
+                        <p class="slds-text-color_error slds-m-top_small">
+                            Please select a patient above before confirming.
+                        </p>
+                    </template>
+
+                    <div class="slds-m-top_medium">
+                        <lightning-button
+                            label={bookButtonLabel}
+                            variant="brand"
+                            onclick={handleConfirmBooking}
+                            disabled={isConfirmDisabled}
+                        ></lightning-button>
+                    </div>
+                </div>
+            </template>
+
+        </div>
+    </lightning-card>
+</template>

@@ -1,0 +1,84 @@
+<template>
+    <lightning-card title="Select Appointment Time" icon-name="standard:event">
+        <div class="slds-p-around_medium">
+
+            <!-- Date Picker -->
+            <lightning-input
+                type="date"
+                label="Appointment Date"
+                value={selectedDate}
+                min={today}
+                onchange={handleDateChange}
+            ></lightning-input>
+
+            <!-- Loading Spinner -->
+            <template lwc:if={isLoading}>
+                <div class="slds-align_absolute-center slds-p-around_large">
+                    <lightning-spinner
+                        alternative-text="Loading available slots"
+                        size="medium"
+                    ></lightning-spinner>
+                </div>
+            </template>
+
+            <!-- Error -->
+            <template lwc:elseif={hasError}>
+                <div class="slds-notify slds-notify_alert slds-alert_error slds-m-top_medium" role="alert">
+                    <lightning-icon
+                        icon-name="utility:error"
+                        alternative-text="Error"
+                        size="x-small"
+                        class="slds-m-right_x-small"
+                    ></lightning-icon>
+                    {errorMessage}
+                </div>
+            </template>
+
+            <!-- Slot Grid -->
+            <template lwc:elseif={hasSlots}>
+                <div class="slds-m-top_medium">
+                    <p class="slds-text-title slds-m-bottom_small">{slotDateLabel}</p>
+
+                    <div class="slot-grid">
+                        <template for:each={enrichedSlots} for:item="slot">
+                            <button
+                                key={slot.startIso}
+                                class={slot.cssClass}
+                                disabled={slot.isBooked}
+                                data-start={slot.startIso}
+                                data-end={slot.endIso}
+                                data-label={slot.label}
+                                onclick={handleSlotClick}
+                            >
+                                <span class="slot-time">{slot.label}</span>
+                                <template lwc:if={slot.isBooked}>
+                                    <span class="slot-badge">Booked</span>
+                                </template>
+                            </button>
+                        </template>
+                    </div>
+
+                    <!-- Selected slot summary -->
+                    <template lwc:if={selectedSlot}>
+                        <div class="slds-m-top_medium selection-summary">
+                            <lightning-icon
+                                icon-name="utility:check"
+                                size="x-small"
+                                class="slds-m-right_x-small"
+                            ></lightning-icon>
+                            Selected: <strong>&nbsp;{selectedSlot.label}</strong>
+                        </div>
+                    </template>
+                </div>
+            </template>
+
+            <!-- Empty state: no date selected yet -->
+            <template lwc:elseif={noDateSelected}>
+                <p class="slds-text-color_weak slds-text-align_center slds-m-top_large">
+                    Select a date above to view available appointment slots.
+                </p>
+            </template>
+
+        </div>
+    </lightning-card>
+</template>

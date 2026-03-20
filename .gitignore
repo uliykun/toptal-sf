@@ -1,0 +1,20 @@
+# Salesforce
+.sfdx/
+.sf/
+*.log
+
+# Node
+node_modules/
+.npm/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/settings.json
+.idea/
+
+# Test results
+test-results/
+coverage/

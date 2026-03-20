@@ -1,0 +1,44 @@
+<template>
+    <div class="picker-wrapper">
+        <p class="slds-text-heading_small slds-m-bottom_small">
+            Select Specialization
+        </p>
+
+        <!-- Loading -->
+        <template lwc:if={isLoading}>
+            <div class="slds-align_absolute-center slds-p-around_large">
+                <lightning-spinner
+                    alternative-text="Loading specializations"
+                    size="small"
+                ></lightning-spinner>
+            </div>
+        </template>
+
+        <!-- Error -->
+        <template lwc:elseif={hasError}>
+            <div class="slds-notify slds-notify_alert slds-alert_error" role="alert">
+                <lightning-icon icon-name="utility:error" size="x-small" class="slds-m-right_x-small"></lightning-icon>
+                {errorMessage}
+            </div>
+        </template>
+
+        <!-- Specialization Cards -->
+        <template lwc:else>
+            <div class="spec-grid">
+                <template for:each={enrichedSpecializations} for:item="spec">
+                    <div
+                        key={spec.key}
+                        class={spec.cssClass}
+                        data-key={spec.key}
+                        data-label={spec.label}
+                        data-price={spec.price}
+                        onclick={handleSelect}
+                    >
+                        <p class="spec-name">{spec.label}</p>
+                        <p class="spec-price">{spec.priceLabel}</p>
+                    </div>
+                </template>
+            </div>
+        </template>
+    </div>
+</template>

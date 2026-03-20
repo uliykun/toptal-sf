@@ -1,0 +1,60 @@
+/* ── Grid ───────────────────────────────────────────────────────────────── */
+.spec-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem;
+}
+
+/* ── Card Base ──────────────────────────────────────────────────────────── */
+.spec-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1.25rem 0.75rem;
+    border-radius: 0.5rem;
+    border: 2px solid #dddbda;
+    background-color: #ffffff;
+    cursor: pointer;
+    transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+    text-align: center;
+}
+
+.spec-card:hover {
+    border-color: #0176d3;
+    box-shadow: 0 2px 8px rgba(1, 118, 211, 0.15);
+}
+
+/* ── Selected ───────────────────────────────────────────────────────────── */
+.spec-card--selected {
+    border-color: #0176d3;
+    background-color: #f0f8ff;
+    box-shadow: 0 2px 8px rgba(1, 118, 211, 0.2);
+}
+
+/* ── Text ───────────────────────────────────────────────────────────────── */
+.spec-name {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: #181818;
+    margin: 0 0 0.375rem 0;
+}
+
+.spec-price {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: #0176d3;
+    margin: 0;
+}
+
+.spec-card--selected .spec-name,
+.spec-card--selected .spec-price {
+    color: #0176d3;
+}
+
+/* ── Responsive ─────────────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+    .spec-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

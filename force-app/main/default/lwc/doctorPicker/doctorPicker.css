@@ -1,0 +1,65 @@
+/* ── Grid ───────────────────────────────────────────────────────────────── */
+.doctor-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem;
+}
+
+/* ── Card Base ──────────────────────────────────────────────────────────── */
+.doctor-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1.25rem 0.75rem;
+    border-radius: 0.5rem;
+    border: 2px solid #dddbda;
+    background-color: #ffffff;
+    cursor: pointer;
+    transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+    text-align: center;
+    gap: 0.375rem;
+}
+
+.doctor-card:hover {
+    border-color: #0176d3;
+    box-shadow: 0 2px 8px rgba(1, 118, 211, 0.15);
+}
+
+/* ── Selected ───────────────────────────────────────────────────────────── */
+.doctor-card--selected {
+    border-color: #0176d3;
+    background-color: #f0f8ff;
+    box-shadow: 0 2px 8px rgba(1, 118, 211, 0.2);
+}
+
+/* ── Avatar ─────────────────────────────────────────────────────────────── */
+.doctor-avatar {
+    margin-bottom: 0.25rem;
+}
+
+/* ── Text ───────────────────────────────────────────────────────────────── */
+.doctor-name {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: #181818;
+    margin: 0;
+}
+
+.doctor-email {
+    font-size: 0.75rem;
+    color: #706e6b;
+    margin: 0;
+    word-break: break-all;
+}
+
+.doctor-card--selected .doctor-name {
+    color: #0176d3;
+}
+
+/* ── Responsive ─────────────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+    .doctor-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
