@@ -1,8 +1,5 @@
 <template>
     <div class="picker-wrapper">
-        <p class="slds-text-heading_small slds-m-bottom_small">
-            Select Specialization
-        </p>
 
         <!-- Loading -->
         <template lwc:if={isLoading}>
@@ -24,21 +21,32 @@
 
         <!-- Specialization Cards -->
         <template lwc:else>
-            <div class="spec-grid">
+            <lightning-layout multiple-rows>
                 <template for:each={enrichedSpecializations} for:item="spec">
-                    <div
+                    <lightning-layout-item
                         key={spec.key}
-                        class={spec.cssClass}
-                        data-key={spec.key}
-                        data-label={spec.label}
-                        data-price={spec.price}
-                        onclick={handleSelect}
+                        size="3"
+                        padding="around-x-small"
                     >
-                        <p class="spec-name">{spec.label}</p>
-                        <p class="spec-price">{spec.priceLabel}</p>
-                    </div>
+                        <div
+                            class={spec.cssClass}
+                            data-key={spec.key}
+                            data-label={spec.label}
+                            data-price={spec.price}
+                            onclick={handleSelect}
+                        >
+                            <p class="spec-name">{spec.label}</p>
+                            <p class="spec-price">
+                                <lightning-formatted-number
+                                    value={spec.price}
+                                    format-style="currency"
+                                    currency-code="GBP"
+                                ></lightning-formatted-number>
+                            </p>
+                        </div>
+                    </lightning-layout-item>
                 </template>
-            </div>
+            </lightning-layout>
         </template>
     </div>
 </template>

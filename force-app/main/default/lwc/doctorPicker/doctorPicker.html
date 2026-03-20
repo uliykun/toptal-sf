@@ -1,8 +1,5 @@
 <template>
     <div class="picker-wrapper">
-        <p class="slds-text-heading_small slds-m-bottom_small">
-            Select Doctor
-        </p>
 
         <!-- Loading -->
         <template lwc:if={isLoading}>
@@ -31,27 +28,32 @@
 
         <!-- Doctor Cards -->
         <template lwc:else>
-            <div class="doctor-grid">
+            <lightning-layout multiple-rows>
                 <template for:each={enrichedDoctors} for:item="doctor">
-                    <div
+                    <lightning-layout-item
                         key={doctor.id}
-                        class={doctor.cssClass}
-                        data-id={doctor.id}
-                        data-calendar-id={doctor.calendarId}
-                        data-name={doctor.fullName}
-                        onclick={handleSelect}
+                        size="3"
+                        padding="around-x-small"
                     >
-                        <div class="doctor-avatar">
-                            <lightning-icon
-                                icon-name="standard:person_account"
-                                size="medium"
-                            ></lightning-icon>
+                        <div
+                            class={doctor.cssClass}
+                            data-id={doctor.id}
+                            data-calendar-id={doctor.calendarId}
+                            data-name={doctor.fullName}
+                            onclick={handleSelect}
+                        >
+                            <div class="doctor-avatar">
+                                <lightning-icon
+                                    icon-name="standard:person_account"
+                                    size="medium"
+                                ></lightning-icon>
+                            </div>
+                            <p class="doctor-name">{doctor.fullName}</p>
+                            <p class="doctor-email">{doctor.email}</p>
                         </div>
-                        <p class="doctor-name">{doctor.fullName}</p>
-                        <p class="doctor-email">{doctor.email}</p>
-                    </div>
+                    </lightning-layout-item>
                 </template>
-            </div>
+            </lightning-layout>
         </template>
     </div>
 </template>

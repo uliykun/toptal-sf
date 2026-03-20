@@ -17,10 +17,7 @@
 
             <!-- ── Step 1: Specialization ──────────────────────────────── -->
             <div class="slds-m-bottom_large">
-                <div class="step-label">
-                    <span class="step-badge">1</span>
-                    Select Specialization
-                </div>
+                <p class="slds-text-heading_small slds-m-bottom_small">Select Specialization</p>
                 <c-specialization-picker
                     onspecializationselected={handleSpecializationSelected}
                 ></c-specialization-picker>
@@ -30,11 +27,10 @@
             <template lwc:if={selectedSpecialization}>
                 <hr class="slds-m-vertical_medium" />
                 <div class="slds-m-bottom_large">
-                    <div class="step-label">
-                        <span class="step-badge">2</span>
+                    <p class="slds-text-heading_small slds-m-bottom_small">
                         Select Doctor
-                        <span class="step-sub">— {selectedSpecializationLabel}</span>
-                    </div>
+                        <span class="slds-text-body_small slds-text-color_weak"> — {selectedSpecializationLabel}</span>
+                    </p>
                     <c-doctor-picker
                         specialization={selectedSpecialization}
                         ondoctorselected={handleDoctorSelected}
@@ -46,11 +42,10 @@
             <template lwc:if={selectedCalendarId}>
                 <hr class="slds-m-vertical_medium" />
                 <div class="slds-m-bottom_large">
-                    <div class="step-label">
-                        <span class="step-badge">3</span>
+                    <p class="slds-text-heading_small slds-m-bottom_small">
                         Select Date &amp; Time
-                        <span class="step-sub">— {selectedDoctorName}</span>
-                    </div>
+                        <span class="slds-text-body_small slds-text-color_weak"> — {selectedDoctorName}</span>
+                    </p>
                     <c-doctor-time-slots
                         calendar-id={selectedCalendarId}
                         time-zone={timeZone}
@@ -83,7 +78,13 @@
                         </div>
                         <div class="summary-row">
                             <span class="summary-label">Price</span>
-                            <span class="summary-value summary-price">£{selectedPriceFormatted}</span>
+                            <span class="summary-value summary-price">
+                                <lightning-formatted-number
+                                    value={selectedPrice}
+                                    format-style="currency"
+                                    currency-code="GBP"
+                                ></lightning-formatted-number>
+                            </span>
                         </div>
                     </div>
 

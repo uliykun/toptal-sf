@@ -1,16 +1,10 @@
-/* ── Grid ───────────────────────────────────────────────────────────────── */
-.doctor-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 0.75rem;
-}
-
 /* ── Card Base ──────────────────────────────────────────────────────────── */
 .doctor-card {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    width: 100%;
     padding: 1.25rem 0.75rem;
     border-radius: 0.5rem;
     border: 2px solid #dddbda;
@@ -57,9 +51,3 @@
     color: #0176d3;
 }
 
-/* ── Responsive ─────────────────────────────────────────────────────────── */
-@media (max-width: 600px) {
-    .doctor-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}

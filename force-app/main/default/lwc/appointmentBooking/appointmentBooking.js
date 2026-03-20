@@ -70,10 +70,6 @@ export default class AppointmentBooking extends LightningElement {
         return this.isBooking ? 'Booking…' : 'Confirm Booking';
     }
 
-    get selectedPriceFormatted() {
-        return Number(this.selectedPrice).toFixed(2);
-    }
-
     get bookingDateTimeLabel() {
         if (!this.selectedSlot) return '';
         return this.selectedSlot.label + ', ' + this._formatDate(this.selectedSlot.date);

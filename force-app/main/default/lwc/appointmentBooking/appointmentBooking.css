@@ -1,34 +1,3 @@
-/* ── Step Labels ────────────────────────────────────────────────────────── */
-.step-label {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 1rem;
-    font-weight: 600;
-    color: #181818;
-    margin-bottom: 0.75rem;
-}
-
-.step-badge {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 1.75rem;
-    height: 1.75rem;
-    border-radius: 50%;
-    background-color: #0176d3;
-    color: #ffffff;
-    font-size: 0.875rem;
-    font-weight: 700;
-    flex-shrink: 0;
-}
-
-.step-sub {
-    font-weight: 400;
-    color: #706e6b;
-    font-size: 0.875rem;
-}
-
 /* ── Booking Summary ────────────────────────────────────────────────────── */
 .booking-summary {
     background-color: #f3f2f2;

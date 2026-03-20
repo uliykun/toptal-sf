@@ -33,8 +33,7 @@ export default class SpecializationPicker extends LightningElement {
     get enrichedSpecializations() {
         return this.specializations.map(s => ({
             ...s,
-            priceLabel : '£' + Number(s.price).toFixed(2),
-            cssClass   : s.key === this.selectedKey
+            cssClass : s.key === this.selectedKey
                 ? 'spec-card spec-card--selected'
                 : 'spec-card'
         }));
