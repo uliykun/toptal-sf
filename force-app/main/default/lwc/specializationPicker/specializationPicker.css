@@ -1,4 +1,4 @@
-/* ── Card Base ──────────────────────────────────────────────────────────── */
+/* card */
 .spec-card {
     display: flex;
     flex-direction: column;
@@ -19,14 +19,14 @@
     box-shadow: 0 2px 8px rgba(1, 118, 211, 0.15);
 }
 
-/* ── Selected ───────────────────────────────────────────────────────────── */
+/* selected */
 .spec-card--selected {
     border-color: #0176d3;
     background-color: #f0f8ff;
     box-shadow: 0 2px 8px rgba(1, 118, 211, 0.2);
 }
 
-/* ── Text ───────────────────────────────────────────────────────────────── */
+/* text */
 .spec-name {
     font-size: 0.9375rem;
     font-weight: 600;

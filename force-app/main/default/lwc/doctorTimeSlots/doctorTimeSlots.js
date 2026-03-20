@@ -2,20 +2,18 @@ import { LightningElement, api, track } from 'lwc';
 import getAvailableSlots from '@salesforce/apex/GoogleCalendarController.getAvailableSlots';
 
 export default class DoctorTimeSlots extends LightningElement {
-    /** Calendar ID of the physician (e.g. 'primary' or a full Gmail address). */
+    // Calendar ID of the physician (e.g. 'primary' or a full Gmail address)
     @api calendarId = 'primary';
-    /** IANA timezone identifier (e.g. 'Europe/London'). */
+    // IANA timezone identifier (e.g. 'Europe/London')
     @api timeZone = 'Europe/London';
 
-    @track slots        = [];
+    @track slots = [];
     @track selectedDate = '';
     @track selectedSlot = null;
-    @track isLoading    = false;
+    @track isLoading = false;
     @track errorMessage = '';
 
-    // ─── Getters ────────────────────────────────────────────────────────────
-
-    /** Today's date in YYYY-MM-DD using local time (safe minimum for date input). */
+    // today's date as YYYY-MM-DD in local time (used as date input min)
     get today() {
         const now   = new Date();
         const year  = now.getFullYear();
@@ -36,32 +34,27 @@ export default class DoctorTimeSlots extends LightningElement {
         return this.slots.length > 0 && !this.isLoading && !this.errorMessage;
     }
 
-    /** Human-readable date heading, e.g. "Friday, 20 March 2026". */
+    // e.g. "Friday, 20 March 2026"
     get slotDateLabel() {
         if (!this.selectedDate) return '';
         // Use T12:00:00 to avoid timezone-boundary day-off issues
         const date = new Date(this.selectedDate + 'T12:00:00');
         return date.toLocaleDateString('en-GB', {
-            weekday : 'long',
-            year    : 'numeric',
-            month   : 'long',
-            day     : 'numeric'
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
         });
     }
 
-    /**
-     * Enriches raw slot data with CSS classes and booked flag.
-     * Reactive: recomputes whenever `slots` or `selectedSlot` changes.
-     */
+    // adds CSS class and booked flag to each slot for template rendering
     get enrichedSlots() {
         return this.slots.map(slot => ({
             ...slot,
-            isBooked : !slot.isAvailable,
-            cssClass : this._slotCssClass(slot)
+            isBooked: !slot.isAvailable,
+            cssClass: this._slotCssClass(slot)
         }));
     }
-
-    // ─── Event Handlers ─────────────────────────────────────────────────────
 
     handleDateChange(event) {
         this.selectedDate = event.target.value;
@@ -76,32 +69,30 @@ export default class DoctorTimeSlots extends LightningElement {
         const { start, end, label } = event.currentTarget.dataset;
         this.selectedSlot = { startIso: start, endIso: end, label };
 
-        /** Fire event so the parent booking wizard can react. */
+        // notify parent booking wizard
         this.dispatchEvent(new CustomEvent('slotselected', {
             detail: {
-                startIso : start,
-                endIso   : end,
-                label    : label,
-                date     : this.selectedDate
+                startIso: start,
+                endIso: end,
+                label: label,
+                date: this.selectedDate
             },
-            bubbles  : false,
-            composed : false
+            bubbles: false,
+            composed: false
         }));
     }
 
-    // ─── Private ─────────────────────────────────────────────────────────────
-
     _fetchSlots() {
         this.isLoading = true;
-        this.slots     = [];
+        this.slots = [];
 
         getAvailableSlots({
-            calendarId : this.calendarId,
-            dateStr    : this.selectedDate,
-            timeZone   : this.timeZone
+            calendarId: this.calendarId,
+            dateStr: this.selectedDate,
+            timeZone: this.timeZone
         })
             .then(result => {
-                this.slots        = result;
+                this.slots = result;
                 this.errorMessage = '';
             })
             .catch(error => {

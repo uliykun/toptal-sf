@@ -7,6 +7,20 @@ private class GoogleCalendarControllerTest {
     private static final String EVENT_JSON =
         '{"id":"evt1","status":"confirmed","htmlLink":"https://cal.google.com/event"}';
 
+    /**
+     * Throws a non-CalloutException from inside respond().
+     * HttpUtils.send() only catches CalloutException, so this propagates
+     * all the way up to GoogleCalendarController's catch (Exception ex) blocks,
+     * covering the defensive catch-all paths.
+     */
+    private class UnexpectedRuntimeException extends Exception {}
+
+    private class ThrowingMock implements HttpCalloutMock {
+        public HTTPResponse respond(HTTPRequest req) {
+            throw new UnexpectedRuntimeException('Simulated unexpected runtime error');
+        }
+    }
+
     // ── createCalendarEvent ───────────────────────────────────────────────────
 
     @isTest
@@ -196,5 +210,51 @@ private class GoogleCalendarControllerTest {
         } catch (AuraHandledException ex) { caught = ex; }
         Assert.isNotNull(caught);
         Assert.isTrue(caught.getMessage().contains('Date'));
+    }
+
+    // ── Unexpected-exception catch-all coverage ───────────────────────────────
+    // These tests use ThrowingMock, which throws a non-CalloutException.
+    // HttpUtils.send() only catches CalloutException, so the raw exception
+    // bypasses the service layer and hits the controller's catch (Exception ex) blocks.
+
+    @isTest
+    static void createCalendarEvent_unexpectedException_throwsGenericAura() {
+        Test.setMock(HttpCalloutMock.class, new ThrowingMock());
+        Exception caught;
+        Test.startTest();
+        try {
+            GoogleCalendarController.createCalendarEvent(
+                CAL_ID, 'John', 'Smith', 'Cardiology',
+                START_ISO, END_ISO, 'UTC', null
+            );
+        } catch (AuraHandledException ex) { caught = ex; }
+        Test.stopTest();
+        Assert.isNotNull(caught, 'Unexpected runtime error should surface as AuraHandledException');
+    }
+
+    @isTest
+    static void getAvailableSlots_unexpectedException_throwsGenericAura() {
+        Test.setMock(HttpCalloutMock.class, new ThrowingMock());
+        Exception caught;
+        Test.startTest();
+        try {
+            GoogleCalendarController.getAvailableSlots(CAL_ID, '2026-03-21', 'UTC');
+        } catch (AuraHandledException ex) { caught = ex; }
+        Test.stopTest();
+        Assert.isNotNull(caught, 'Unexpected runtime error should surface as AuraHandledException');
+    }
+
+    @isTest
+    static void getCalendarEvents_unexpectedException_throwsGenericAura() {
+        Test.setMock(HttpCalloutMock.class, new ThrowingMock());
+        Exception caught;
+        Test.startTest();
+        try {
+            GoogleCalendarController.getCalendarEvents(
+                CAL_ID, '2026-03-21T00:00:00Z', '2026-03-22T00:00:00Z'
+            );
+        } catch (AuraHandledException ex) { caught = ex; }
+        Test.stopTest();
+        Assert.isNotNull(caught, 'Unexpected runtime error should surface as AuraHandledException');
     }
 }

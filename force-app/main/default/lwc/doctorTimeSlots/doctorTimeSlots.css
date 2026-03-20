@@ -1,4 +1,4 @@
-/* ── Slot Grid ──────────────────────────────────────────────────────────── */
+/* slot grid */
 .slot-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -6,7 +6,7 @@
     margin-top: 0.75rem;
 }
 
-/* ── Slot Button Base ───────────────────────────────────────────────────── */
+/* slot button */
 .slot-btn {
     display: flex;
     flex-direction: column;
@@ -26,7 +26,7 @@
     font-family: inherit;
 }
 
-/* ── Available ──────────────────────────────────────────────────────────── */
+/* available */
 .slot-btn--available {
     background-color: #f4fff8;
     border-color: #2e844a;
@@ -39,14 +39,14 @@
     color: #ffffff;
 }
 
-/* ── Selected ───────────────────────────────────────────────────────────── */
+/* selected */
 .slot-btn--selected {
     background-color: #2e844a;
     border-color: #2e844a;
     color: #ffffff;
 }
 
-/* ── Booked / Disabled ──────────────────────────────────────────────────── */
+/* booked */
 .slot-btn--booked {
     background-color: #f3f3f3;
     border-color: #dddbda;
@@ -54,7 +54,7 @@
     cursor: not-allowed;
 }
 
-/* ── Slot labels ────────────────────────────────────────────────────────── */
+/* labels */
 .slot-time {
     display: block;
 }
@@ -69,7 +69,7 @@
     opacity: 0.75;
 }
 
-/* ── Selection Summary ──────────────────────────────────────────────────── */
+/* selection summary */
 .selection-summary {
     display: flex;
     align-items: center;
@@ -81,7 +81,7 @@
     font-size: 0.875rem;
 }
 
-/* ── Responsive: 2 columns on narrow screens ────────────────────────────── */
+/* responsive */
 @media (max-width: 480px) {
     .slot-grid {
         grid-template-columns: repeat(2, 1fr);

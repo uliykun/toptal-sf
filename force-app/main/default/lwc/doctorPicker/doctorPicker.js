@@ -4,12 +4,10 @@ import getDoctorsBySpecialization from '@salesforce/apex/AppointmentController.g
 export default class DoctorPicker extends LightningElement {
 
     @track _specialization = null;
-    @track doctors         = [];
-    @track selectedId      = null;
-    @track errorMessage    = '';
-    isLoading              = false;
-
-    // ─── @api ────────────────────────────────────────────────────────────────
+    @track doctors = [];
+    @track selectedId = null;
+    @track errorMessage = '';
+    isLoading = false;
 
     @api
     get specialization() {
@@ -17,28 +15,24 @@ export default class DoctorPicker extends LightningElement {
     }
     set specialization(value) {
         this._specialization = value;
-        this.selectedId  = null;   // reset selection when specialization changes
+        this.selectedId = null;   // reset selection when specialization changes
         this.errorMessage = '';
     }
-
-    // ─── Wire ────────────────────────────────────────────────────────────────
 
     @wire(getDoctorsBySpecialization, { specialization: '$_specialization' })
     wiredDoctors({ data, error }) {
         this.isLoading = false;
         if (data) {
             this.doctors = data.map(doc => ({
-                id         : doc.Id,
-                fullName   : 'Dr. ' + doc.FirstName + ' ' + doc.LastName,
-                email      : doc.Email,
-                calendarId : doc.Google_Calendar_Id__c
+                id: doc.Id,
+                fullName: 'Dr. ' + doc.FirstName + ' ' + doc.LastName,
+                email: doc.Email,
+                calendarId: doc.Google_Calendar_Id__c
             }));
         } else if (error) {
             this.errorMessage = error?.body?.message || 'Failed to load doctors.';
         }
     }
-
-    // ─── Getters ─────────────────────────────────────────────────────────────
 
     get hasError() {
         return !!this.errorMessage;
@@ -51,22 +45,20 @@ export default class DoctorPicker extends LightningElement {
     get enrichedDoctors() {
         return this.doctors.map(doc => ({
             ...doc,
-            cssClass : doc.id === this.selectedId
+            cssClass: doc.id === this.selectedId
                 ? 'doctor-card doctor-card--selected'
                 : 'doctor-card'
         }));
     }
-
-    // ─── Handlers ────────────────────────────────────────────────────────────
 
     handleSelect(event) {
         const { id, calendarId, name } = event.currentTarget.dataset;
         this.selectedId = id;
 
         this.dispatchEvent(new CustomEvent('doctorselected', {
-            detail   : { doctorId: id, calendarId, doctorName: name },
-            bubbles  : false,
-            composed : false
+            detail: { doctorId: id, calendarId, doctorName: name },
+            bubbles: false,
+            composed: false
         }));
     }
 }
