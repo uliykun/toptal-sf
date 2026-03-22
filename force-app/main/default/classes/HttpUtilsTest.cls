@@ -4,6 +4,7 @@ private class HttpUtilsTest {
     @isTest
     static void buildRequest_setsAllBaseProperties() {
         HttpRequest req = HttpUtils.buildRequest('GET', 'https://example.com/api', 5000);
+
         Assert.areEqual('GET', req.getMethod());
         Assert.areEqual('https://example.com/api', req.getEndpoint());
         Assert.areEqual('application/json', req.getHeader('Accept'));
@@ -13,6 +14,7 @@ private class HttpUtilsTest {
     static void buildJsonRequest_addsContentTypeAndBody() {
         String body = '{"key":"value"}';
         HttpRequest req = HttpUtils.buildJsonRequest('POST', 'https://example.com', body, 5000);
+
         Assert.areEqual('POST', req.getMethod());
         Assert.areEqual('application/json', req.getHeader('Content-Type'));
         Assert.areEqual(body, req.getBody());
@@ -21,6 +23,7 @@ private class HttpUtilsTest {
     @isTest
     static void buildJsonRequest_patchMethodIsSupported() {
         HttpRequest req = HttpUtils.buildJsonRequest('PATCH', 'https://example.com', '{}', 5000);
+
         Assert.areEqual('PATCH', req.getMethod());
     }
 
@@ -31,6 +34,7 @@ private class HttpUtilsTest {
         res.setStatus('OK');
         res.setBody('{"id":"abc"}');
         HttpUtils.ResponseWrapper w = new HttpUtils.ResponseWrapper(res);
+
         Assert.isTrue(w.isSuccess);
         Assert.areEqual(200, w.statusCode);
         Assert.areEqual('{"id":"abc"}', w.responseBody);
@@ -44,6 +48,7 @@ private class HttpUtilsTest {
         res.setStatus('Created');
         res.setBody('{}');
         HttpUtils.ResponseWrapper w = new HttpUtils.ResponseWrapper(res);
+
         Assert.isTrue(w.isSuccess);
     }
 
@@ -54,6 +59,7 @@ private class HttpUtilsTest {
         res.setStatus('Unauthorized');
         res.setBody('');
         HttpUtils.ResponseWrapper w = new HttpUtils.ResponseWrapper(res);
+
         Assert.isFalse(w.isSuccess);
         Assert.areEqual(401, w.statusCode);
         Assert.isTrue(w.errorMessage.contains('401'));
@@ -66,6 +72,7 @@ private class HttpUtilsTest {
         res.setStatus('Internal Server Error');
         res.setBody('');
         HttpUtils.ResponseWrapper w = new HttpUtils.ResponseWrapper(res);
+
         Assert.isFalse(w.isSuccess);
         Assert.isTrue(w.errorMessage.contains('500'));
     }
@@ -73,6 +80,7 @@ private class HttpUtilsTest {
     @isTest
     static void responseWrapper_failureFactory_setsErrorMessage() {
         HttpUtils.ResponseWrapper w = HttpUtils.failure('Timeout occurred');
+
         Assert.isFalse(w.isSuccess);
         Assert.isNull(w.statusCode);
         Assert.isNull(w.responseBody);
@@ -87,6 +95,7 @@ private class HttpUtilsTest {
             HttpUtils.buildRequest('GET', 'callout:Google_Calendar_API/test', 5000)
         );
         Test.stopTest();
+
         Assert.isTrue(w.isSuccess);
         Assert.isTrue(w.responseBody.contains('event1'));
     }
@@ -99,6 +108,7 @@ private class HttpUtilsTest {
             HttpUtils.buildRequest('GET', 'callout:Google_Calendar_API/test', 5000)
         );
         Test.stopTest();
+
         Assert.isFalse(w.isSuccess);
         Assert.isTrue(w.errorMessage.contains('Callout failed'));
     }
@@ -111,6 +121,7 @@ private class HttpUtilsTest {
             HttpUtils.buildRequest('GET', 'callout:Google_Calendar_API/test', 5000)
         );
         Test.stopTest();
+
         Assert.isFalse(w.isSuccess);
         Assert.areEqual(404, w.statusCode);
     }

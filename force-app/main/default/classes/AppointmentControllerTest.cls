@@ -6,8 +6,7 @@ private class AppointmentControllerTest {
     private static final String START_ISO = '2026-03-21T09:00:00';
     private static final String END_ISO = '2026-03-21T10:00:00';
     private static final String TZ = 'Europe/London';
-    private static final String EVENT_JSON =
-        '{"id":"gcal001","htmlLink":"https://calendar.google.com/event?eid=gcal001"}';
+    private static final String EVENT_JSON = '{"id":"gcal001","htmlLink":"https://calendar.google.com/event?eid=gcal001"}';
 
     @IsTest
     static void getSpecializations_returnsNonNullList() {
@@ -41,6 +40,7 @@ private class AppointmentControllerTest {
         for (Contact c : result) {
             if (c.Id == doc.Id) { found = true; break; }
         }
+
         Assert.isTrue(found, 'Inserted doctor should appear in results');
     }
 
@@ -262,6 +262,7 @@ private class AppointmentControllerTest {
         Test.stopTest();
 
         Integer count = [SELECT COUNT() FROM Appointment__c WHERE Doctor__c = :doc.Id];
+
         Assert.areEqual(0, count, 'No Appointment__c record should be created when Google Calendar call fails');
     }
 }

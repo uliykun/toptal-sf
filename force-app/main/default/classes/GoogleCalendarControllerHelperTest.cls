@@ -10,6 +10,7 @@ private class GoogleCalendarControllerHelperTest {
                 '2026-03-21T10:00:00', '2026-03-21T11:00:00', 'UTC'
             );
         } catch (Exception ex) { caught = ex; }
+
         Assert.isNull(caught);
     }
 
@@ -22,6 +23,7 @@ private class GoogleCalendarControllerHelperTest {
                 '2026-03-21T10:00:00', '2026-03-21T11:00:00', 'UTC'
             );
         } catch (Exception ex) { caught = ex; }
+
         Assert.isNotNull(caught);
         Assert.isTrue(caught.getMessage().contains('Calendar ID'));
     }
@@ -35,6 +37,7 @@ private class GoogleCalendarControllerHelperTest {
                 '2026-03-21T10:00:00', '2026-03-21T11:00:00', 'UTC'
             );
         } catch (Exception ex) { caught = ex; }
+
         Assert.isNotNull(caught);
         Assert.isTrue(caught.getMessage().contains('Calendar ID'));
         Assert.isTrue(caught.getMessage().contains('Physician name'));
@@ -48,6 +51,7 @@ private class GoogleCalendarControllerHelperTest {
                 '', '', '', '', '', '', ''
             );
         } catch (Exception ex) { caught = ex; }
+
         Assert.isNotNull(caught);
     }
 
@@ -60,6 +64,7 @@ private class GoogleCalendarControllerHelperTest {
         try {
             GoogleCalendarControllerHelper.validateTimeWindow(start, endDt);
         } catch (Exception ex) { caught = ex; }
+
         Assert.isNotNull(caught);
         Assert.isTrue(caught.getMessage().contains('after start time'));
     }
@@ -71,6 +76,7 @@ private class GoogleCalendarControllerHelperTest {
         try {
             GoogleCalendarControllerHelper.validateTimeWindow(dt, dt);
         } catch (Exception ex) { caught = ex; }
+
         Assert.isNotNull(caught);
         Assert.isTrue(caught.getMessage().contains('after start time'));
     }
@@ -83,6 +89,7 @@ private class GoogleCalendarControllerHelperTest {
         try {
             GoogleCalendarControllerHelper.validateTimeWindow(start, endDt);
         } catch (Exception ex) { caught = ex; }
+
         Assert.isNull(caught);
     }
 
@@ -100,6 +107,7 @@ private class GoogleCalendarControllerHelperTest {
             'UTC', 'john@example.com'
         );
         Test.stopTest();
+
         Assert.areEqual('https://cal.google.com/event', link);
     }
 
@@ -111,6 +119,7 @@ private class GoogleCalendarControllerHelperTest {
         List<GoogleCalendarModels.TimeSlot> slots =
             GoogleCalendarControllerHelper.orchestrateGetSlots('primary', '2026-03-21', 'UTC');
         Test.stopTest();
+
         Assert.isFalse(slots.isEmpty());
     }
 
@@ -120,6 +129,7 @@ private class GoogleCalendarControllerHelperTest {
         try {
             GoogleCalendarControllerHelper.orchestrateGetSlots('', '2026-03-21', 'UTC');
         } catch (Exception ex) { caught = ex; }
+
         Assert.isNotNull(caught);
         Assert.isTrue(caught.getMessage().contains('Calendar ID'));
     }

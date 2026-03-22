@@ -4,6 +4,7 @@ private class GoogleCalendarModelsTest {
     @isTest
     static void eventDateTime_noArgConstructor_fieldsAreNull() {
         GoogleCalendarModels.EventDateTime edt = new GoogleCalendarModels.EventDateTime();
+
         Assert.isNull(edt.dateTimeStr);
         Assert.isNull(edt.timeZone);
     }
@@ -12,6 +13,7 @@ private class GoogleCalendarModelsTest {
     static void eventDateTime_dtConstructor_formatsInRequestedTimezone() {
         DateTime dt = DateTime.newInstanceGmt(2026, 3, 21, 10, 0, 0);
         GoogleCalendarModels.EventDateTime edt = new GoogleCalendarModels.EventDateTime(dt, 'UTC');
+
         Assert.areEqual('2026-03-21T10:00:00', edt.dateTimeStr);
         Assert.areEqual('UTC', edt.timeZone);
     }
@@ -19,12 +21,14 @@ private class GoogleCalendarModelsTest {
     @isTest
     static void attendee_noArgConstructor_emailIsNull() {
         GoogleCalendarModels.Attendee a = new GoogleCalendarModels.Attendee();
+
         Assert.isNull(a.email);
     }
 
     @isTest
     static void attendee_emailConstructor_setsEmail() {
         GoogleCalendarModels.Attendee a = new GoogleCalendarModels.Attendee('doc@example.com');
+
         Assert.areEqual('doc@example.com', a.email);
     }
 
@@ -35,6 +39,7 @@ private class GoogleCalendarModelsTest {
         GoogleCalendarModels.EventRequest req = new GoogleCalendarModels.EventRequest(
             'My Summary', 'My Description', start, endDt, 'UTC'
         );
+
         Assert.areEqual('My Summary', req.summary);
         Assert.areEqual('My Description', req.description);
         Assert.isNotNull(req.start);
@@ -50,6 +55,7 @@ private class GoogleCalendarModelsTest {
             'S', 'D', start, endDt, 'UTC'
         );
         req.addAttendee('patient@example.com');
+
         Assert.areEqual(1, req.attendees.size());
         Assert.areEqual('patient@example.com', req.attendees[0].email);
     }
@@ -63,6 +69,7 @@ private class GoogleCalendarModelsTest {
         );
         req.addAttendee('');
         req.addAttendee(null);
+
         Assert.areEqual(0, req.attendees.size());
     }
 
@@ -74,6 +81,7 @@ private class GoogleCalendarModelsTest {
             'S', 'D', start, endDt, 'UTC'
         );
         GoogleCalendarModels.EventRequest returned = req.addAttendee('a@b.com');
+
         Assert.areEqual(req, returned);
     }
 
@@ -85,6 +93,7 @@ private class GoogleCalendarModelsTest {
             'Cardiology Appointment', 'Patient: John', start, endDt, 'UTC'
         );
         String json = req.toJsonBody();
+
         Assert.isTrue(json.contains('Cardiology Appointment'));
         Assert.isTrue(json.contains('2026-03-21T10:00:00'));
         Assert.isTrue(json.contains('UTC'));
@@ -97,6 +106,7 @@ private class GoogleCalendarModelsTest {
         GoogleCalendarModels.EventRequest req = new GoogleCalendarModels.EventRequest(
             'S', 'D', start, endDt, 'UTC'
         );
+
         Assert.isFalse(req.toJsonBody().contains('"location"'));
     }
 
@@ -104,13 +114,14 @@ private class GoogleCalendarModelsTest {
     static void eventResponse_isSuccess_trueWhenIdPresent() {
         GoogleCalendarModels.EventResponse r =
             GoogleCalendarModels.parseEventResponse('{"id":"evt1","status":"confirmed"}');
+
         Assert.isTrue(r.isSuccess());
     }
 
     @isTest
     static void eventResponse_isSuccess_falseWhenIdBlank() {
-        GoogleCalendarModels.EventResponse r =
-            GoogleCalendarModels.parseEventResponse('{"status":"confirmed"}');
+        GoogleCalendarModels.EventResponse r = GoogleCalendarModels.parseEventResponse('{"status":"confirmed"}');
+
         Assert.isFalse(r.isSuccess());
     }
 
@@ -118,6 +129,7 @@ private class GoogleCalendarModelsTest {
     static void eventResponse_isSuccess_falseWhenErrorPresent() {
         GoogleCalendarModels.EventResponse r =
             GoogleCalendarModels.parseEventResponse('{"error":{"code":401,"message":"Unauthorized"}}');
+
         Assert.isFalse(r.isSuccess());
     }
 
@@ -125,6 +137,7 @@ private class GoogleCalendarModelsTest {
     static void eventResponse_getErrorMessage_returnsNullOnSuccess() {
         GoogleCalendarModels.EventResponse r =
             GoogleCalendarModels.parseEventResponse('{"id":"evt1"}');
+
         Assert.isNull(r.getErrorMessage());
     }
 
@@ -132,6 +145,7 @@ private class GoogleCalendarModelsTest {
     static void eventResponse_getErrorMessage_returnsTopLevelMessage() {
         GoogleCalendarModels.EventResponse r =
             GoogleCalendarModels.parseEventResponse('{"error":{"code":403,"message":"Forbidden"}}');
+
         Assert.areEqual('Forbidden', r.getErrorMessage());
     }
 
@@ -139,13 +153,14 @@ private class GoogleCalendarModelsTest {
     static void eventResponse_getErrorMessage_fallsBackToErrorDetails() {
         String json = '{"error":{"code":403,"errors":[{"message":"Insufficient permissions"}]}}';
         GoogleCalendarModels.EventResponse r = GoogleCalendarModels.parseEventResponse(json);
+
         Assert.areEqual('Insufficient permissions', r.getErrorMessage());
     }
 
     @isTest
     static void eventResponse_getErrorMessage_fallsBackToErrorCode() {
-        GoogleCalendarModels.EventResponse r =
-            GoogleCalendarModels.parseEventResponse('{"error":{"code":418}}');
+        GoogleCalendarModels.EventResponse r = GoogleCalendarModels.parseEventResponse('{"error":{"code":418}}');
+
         Assert.isTrue(r.getErrorMessage().contains('418'));
     }
 
@@ -157,6 +172,7 @@ private class GoogleCalendarModelsTest {
         } catch (Exception ex) {
             caught = ex;
         }
+
         Assert.isNotNull(caught);
     }
 
@@ -164,8 +180,8 @@ private class GoogleCalendarModelsTest {
     static void timeSlot_constructor_setsAllFields() {
         DateTime slotStart = DateTime.newInstanceGmt(2026, 3, 21, 9, 0, 0);
         DateTime slotEnd = DateTime.newInstanceGmt(2026, 3, 21, 9, 30, 0);
-        GoogleCalendarModels.TimeSlot slot =
-            new GoogleCalendarModels.TimeSlot(slotStart, slotEnd, 'UTC', true);
+        GoogleCalendarModels.TimeSlot slot = new GoogleCalendarModels.TimeSlot(slotStart, slotEnd, 'UTC', true);
+
         Assert.areEqual('2026-03-21T09:00:00', slot.startIso);
         Assert.areEqual('2026-03-21T09:30:00', slot.endIso);
         Assert.isTrue(slot.label.contains('9'));
@@ -176,8 +192,8 @@ private class GoogleCalendarModelsTest {
     static void timeSlot_isAvailableFalse_whenBooked() {
         DateTime slotStart = DateTime.newInstanceGmt(2026, 3, 21, 10, 0, 0);
         DateTime slotEnd = DateTime.newInstanceGmt(2026, 3, 21, 10, 30, 0);
-        GoogleCalendarModels.TimeSlot slot =
-            new GoogleCalendarModels.TimeSlot(slotStart, slotEnd, 'UTC', false);
+        GoogleCalendarModels.TimeSlot slot = new GoogleCalendarModels.TimeSlot(slotStart, slotEnd, 'UTC', false);
+
         Assert.isFalse(slot.isAvailable);
     }
 }

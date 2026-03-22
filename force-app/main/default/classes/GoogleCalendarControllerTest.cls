@@ -24,6 +24,7 @@ private class GoogleCalendarControllerTest {
             START_ISO, END_ISO, 'UTC', 'john@example.com'
         );
         Test.stopTest();
+
         Assert.areEqual('https://cal.google.com/event', result);
     }
 
@@ -36,6 +37,7 @@ private class GoogleCalendarControllerTest {
                 START_ISO, END_ISO, 'UTC', null
             );
         } catch (AuraHandledException ex) { caught = ex; }
+
         Assert.isNotNull(caught);
         Assert.isTrue(caught.getMessage().contains('Patient name'));
     }
@@ -48,6 +50,7 @@ private class GoogleCalendarControllerTest {
                 '', '', '', '', '', '', '', null
             );
         } catch (AuraHandledException ex) { caught = ex; }
+
         Assert.isNotNull(caught);
     }
 
@@ -60,6 +63,7 @@ private class GoogleCalendarControllerTest {
                 'not-a-date', END_ISO, 'UTC', null
             );
         } catch (AuraHandledException ex) { caught = ex; }
+
         Assert.isNotNull(caught);
         Assert.isTrue(caught.getMessage().contains('Invalid datetime'));
     }
@@ -73,6 +77,7 @@ private class GoogleCalendarControllerTest {
                 START_ISO, 'not-a-date', 'UTC', null
             );
         } catch (AuraHandledException ex) { caught = ex; }
+
         Assert.isNotNull(caught);
         Assert.isTrue(caught.getMessage().contains('Invalid datetime'));
     }
@@ -86,6 +91,7 @@ private class GoogleCalendarControllerTest {
                 END_ISO, START_ISO, 'UTC', null
             );
         } catch (AuraHandledException ex) { caught = ex; }
+
         Assert.isNotNull(caught);
         Assert.isTrue(caught.getMessage().contains('after start time'));
     }
@@ -99,6 +105,7 @@ private class GoogleCalendarControllerTest {
                 START_ISO, START_ISO, 'UTC', null
             );
         } catch (AuraHandledException ex) { caught = ex; }
+
         Assert.isNotNull(caught);
         Assert.isTrue(caught.getMessage().contains('after start time'));
     }
@@ -116,6 +123,7 @@ private class GoogleCalendarControllerTest {
             );
         } catch (AuraHandledException ex) { caught = ex; }
         Test.stopTest();
+
         Assert.isNotNull(caught);
         Assert.isTrue(caught.getMessage().contains('Forbidden'));
     }
@@ -129,6 +137,7 @@ private class GoogleCalendarControllerTest {
             CAL_ID, '2026-03-21T00:00:00Z', '2026-03-22T00:00:00Z'
         );
         Test.stopTest();
+
         Assert.areEqual(eventsJson, result);
     }
 
@@ -140,6 +149,7 @@ private class GoogleCalendarControllerTest {
                 '', '2026-03-21T00:00:00Z', '2026-03-22T00:00:00Z'
             );
         } catch (AuraHandledException ex) { caught = ex; }
+
         Assert.isNotNull(caught);
         Assert.isTrue(caught.getMessage().contains('Calendar ID'));
     }
@@ -150,6 +160,7 @@ private class GoogleCalendarControllerTest {
         try {
             GoogleCalendarController.getCalendarEvents(CAL_ID, '', '2026-03-22T00:00:00Z');
         } catch (AuraHandledException ex) { caught = ex; }
+
         Assert.isNotNull(caught);
         Assert.isTrue(caught.getMessage().contains('timeMin'));
     }
@@ -166,6 +177,7 @@ private class GoogleCalendarControllerTest {
             );
         } catch (AuraHandledException ex) { caught = ex; }
         Test.stopTest();
+
         Assert.isNotNull(caught);
         Assert.isTrue(caught.getMessage().contains('Server Error'));
     }
@@ -177,6 +189,7 @@ private class GoogleCalendarControllerTest {
         List<GoogleCalendarModels.TimeSlot> slots =
             GoogleCalendarController.getAvailableSlots(CAL_ID, '2026-03-21', 'UTC');
         Test.stopTest();
+
         Assert.isFalse(slots.isEmpty());
     }
 
@@ -186,6 +199,7 @@ private class GoogleCalendarControllerTest {
         try {
             GoogleCalendarController.getAvailableSlots('', '2026-03-21', 'UTC');
         } catch (AuraHandledException ex) { caught = ex; }
+
         Assert.isNotNull(caught);
         Assert.isTrue(caught.getMessage().contains('Calendar ID'));
     }
@@ -196,6 +210,7 @@ private class GoogleCalendarControllerTest {
         try {
             GoogleCalendarController.getAvailableSlots(CAL_ID, '', 'UTC');
         } catch (AuraHandledException ex) { caught = ex; }
+
         Assert.isNotNull(caught);
         Assert.isTrue(caught.getMessage().contains('Date'));
     }
@@ -212,6 +227,7 @@ private class GoogleCalendarControllerTest {
             );
         } catch (AuraHandledException ex) { caught = ex; }
         Test.stopTest();
+
         Assert.isNotNull(caught, 'Unexpected runtime error should surface as AuraHandledException');
     }
 
@@ -224,6 +240,7 @@ private class GoogleCalendarControllerTest {
             GoogleCalendarController.getAvailableSlots(CAL_ID, '2026-03-21', 'UTC');
         } catch (AuraHandledException ex) { caught = ex; }
         Test.stopTest();
+
         Assert.isNotNull(caught, 'Unexpected runtime error should surface as AuraHandledException');
     }
 
@@ -238,6 +255,7 @@ private class GoogleCalendarControllerTest {
             );
         } catch (AuraHandledException ex) { caught = ex; }
         Test.stopTest();
+
         Assert.isNotNull(caught, 'Unexpected runtime error should surface as AuraHandledException');
     }
 }

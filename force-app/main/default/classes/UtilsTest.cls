@@ -9,6 +9,7 @@ private class UtilsTest {
         } catch (AuraHandledException ex) {
             caught = ex;
         }
+
         Assert.isNotNull(caught);
         Assert.areEqual('Something went wrong', caught.getMessage());
     }
@@ -21,6 +22,7 @@ private class UtilsTest {
         } catch (AuraHandledException ex) {
             caught = ex;
         }
+
         Assert.isNotNull(caught);
         Assert.isTrue(caught.getMessage().contains('Patient Name'));
         Assert.isTrue(caught.getMessage().contains('is required'));
@@ -34,12 +36,14 @@ private class UtilsTest {
         } catch (AuraHandledException ex) {
             caught = ex;
         }
+
         Assert.isNotNull(caught);
     }
 
     @isTest
     static void validateNotBlank_doesNotThrowOnValidValue() {
         Utils.validateNotBlank('john@example.com', 'Email');
+
         Assert.isTrue(true);
     }
 
@@ -55,6 +59,7 @@ private class UtilsTest {
         } catch (AuraHandledException ex) {
             caught = ex;
         }
+
         Assert.isNotNull(caught);
         Assert.isTrue(caught.getMessage().contains('First Name'));
         Assert.isTrue(caught.getMessage().contains('Last Name'));
@@ -67,12 +72,14 @@ private class UtilsTest {
             'First' => 'John',
             'Last' => 'Doe'
         });
+
         Assert.isTrue(true);
     }
 
     @isTest
     static void parseIsoDateTime_parsesWithoutZ() {
         DateTime result = Utils.parseIsoDateTime('2026-03-21T10:30:00');
+
         Assert.areEqual(2026, result.yearGmt());
         Assert.areEqual(3, result.monthGmt());
         Assert.areEqual(21, result.dayGmt());
@@ -83,6 +90,7 @@ private class UtilsTest {
     @isTest
     static void parseIsoDateTime_parsesWithTrailingZ() {
         DateTime result = Utils.parseIsoDateTime('2026-03-21T10:00:00Z');
+
         Assert.areEqual(2026, result.yearGmt());
         Assert.areEqual(3, result.monthGmt());
         Assert.areEqual(21, result.dayGmt());
@@ -96,6 +104,7 @@ private class UtilsTest {
         } catch (AuraHandledException ex) {
             caught = ex;
         }
+
         Assert.isNotNull(caught);
     }
 
@@ -107,6 +116,7 @@ private class UtilsTest {
         } catch (AuraHandledException ex) {
             caught = ex;
         }
+
         Assert.isNotNull(caught);
         Assert.isTrue(caught.getMessage().contains('Invalid datetime format'));
     }

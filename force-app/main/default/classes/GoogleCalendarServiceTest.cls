@@ -14,6 +14,7 @@ private class GoogleCalendarServiceTest {
         GoogleCalendarModels.EventResponse resp =
             GoogleCalendarService.createAppointmentEvent(CAL_ID, makeRequest());
         Test.stopTest();
+
         Assert.areEqual('evt1', resp.id);
     }
 
@@ -23,6 +24,7 @@ private class GoogleCalendarServiceTest {
         try {
             GoogleCalendarService.createAppointmentEvent('', makeRequest());
         } catch (Exception ex) { caught = ex; }
+
         Assert.isNotNull(caught);
         Assert.isTrue(caught.getMessage().contains('Calendar ID'));
     }
@@ -33,6 +35,7 @@ private class GoogleCalendarServiceTest {
         try {
             GoogleCalendarService.createAppointmentEvent(CAL_ID, null);
         } catch (Exception ex) { caught = ex; }
+
         Assert.isNotNull(caught);
         Assert.isTrue(caught.getMessage().contains('null'));
     }
@@ -47,6 +50,7 @@ private class GoogleCalendarServiceTest {
             GoogleCalendarService.createAppointmentEvent(CAL_ID, makeRequest());
         } catch (Exception ex) { caught = ex; }
         Test.stopTest();
+
         Assert.isNotNull(caught);
         Assert.isTrue(caught.getMessage().contains('Forbidden'));
     }
@@ -60,6 +64,7 @@ private class GoogleCalendarServiceTest {
             GoogleCalendarService.createAppointmentEvent(CAL_ID, makeRequest());
         } catch (Exception ex) { caught = ex; }
         Test.stopTest();
+
         Assert.isNotNull(caught);
         Assert.isTrue(caught.getMessage().contains('403'));
     }
@@ -73,6 +78,7 @@ private class GoogleCalendarServiceTest {
             GoogleCalendarService.createAppointmentEvent(CAL_ID, makeRequest());
         } catch (Exception ex) { caught = ex; }
         Test.stopTest();
+
         Assert.isNotNull(caught);
         Assert.isTrue(caught.getMessage().contains('Callout failed'));
     }
@@ -87,6 +93,7 @@ private class GoogleCalendarServiceTest {
             GoogleCalendarService.createAppointmentEvent(CAL_ID, makeRequest());
         } catch (Exception ex) { caught = ex; }
         Test.stopTest();
+
         Assert.isNotNull(caught);
         Assert.isTrue(caught.getMessage().contains('empty event ID'));
     }
@@ -100,6 +107,7 @@ private class GoogleCalendarServiceTest {
             GoogleCalendarService.createAppointmentEvent(CAL_ID, makeRequest());
         } catch (Exception ex) { caught = ex; }
         Test.stopTest();
+
         Assert.isNotNull(caught);
         Assert.isTrue(caught.getMessage().contains('parse'));
     }
@@ -113,6 +121,7 @@ private class GoogleCalendarServiceTest {
         String result = GoogleCalendarService.listEventsRaw(
             CAL_ID, '2026-03-21T00:00:00Z', '2026-03-22T00:00:00Z');
         Test.stopTest();
+
         Assert.areEqual(rawJson, result);
     }
 
@@ -122,6 +131,7 @@ private class GoogleCalendarServiceTest {
         try {
             GoogleCalendarService.listEventsRaw('', '2026-03-21T00:00:00Z', '2026-03-22T00:00:00Z');
         } catch (Exception ex) { caught = ex; }
+
         Assert.isNotNull(caught);
         Assert.isTrue(caught.getMessage().contains('Calendar ID'));
     }
@@ -132,6 +142,7 @@ private class GoogleCalendarServiceTest {
         try {
             GoogleCalendarService.listEventsRaw(CAL_ID, '', '2026-03-22T00:00:00Z');
         } catch (Exception ex) { caught = ex; }
+
         Assert.isNotNull(caught);
         Assert.isTrue(caught.getMessage().contains('timeMin'));
     }
@@ -142,6 +153,7 @@ private class GoogleCalendarServiceTest {
         try {
             GoogleCalendarService.listEventsRaw(CAL_ID, '2026-03-21T00:00:00Z', '');
         } catch (Exception ex) { caught = ex; }
+
         Assert.isNotNull(caught);
         Assert.isTrue(caught.getMessage().contains('timeMax'));
     }
@@ -157,6 +169,7 @@ private class GoogleCalendarServiceTest {
                 CAL_ID, '2026-03-21T00:00:00Z', '2026-03-22T00:00:00Z');
         } catch (Exception ex) { caught = ex; }
         Test.stopTest();
+
         Assert.isNotNull(caught);
         Assert.isTrue(caught.getMessage().contains('Unauthorized'));
     }
@@ -171,6 +184,7 @@ private class GoogleCalendarServiceTest {
                 CAL_ID, '2026-03-21T00:00:00Z', '2026-03-22T00:00:00Z');
         } catch (Exception ex) { caught = ex; }
         Test.stopTest();
+
         Assert.isNotNull(caught);
         Assert.isTrue(caught.getMessage().contains('400'));
     }
@@ -183,6 +197,7 @@ private class GoogleCalendarServiceTest {
         GoogleCalendarModels.EventResponse resp =
             GoogleCalendarService.patchAppointmentEvent(CAL_ID, EVENT_ID, '{"summary":"Updated"}');
         Test.stopTest();
+
         Assert.areEqual('evt1', resp.id);
     }
 
@@ -192,6 +207,7 @@ private class GoogleCalendarServiceTest {
         try {
             GoogleCalendarService.patchAppointmentEvent('', EVENT_ID, '{}');
         } catch (Exception ex) { caught = ex; }
+
         Assert.isNotNull(caught);
         Assert.isTrue(caught.getMessage().contains('Calendar ID'));
     }
@@ -202,6 +218,7 @@ private class GoogleCalendarServiceTest {
         try {
             GoogleCalendarService.patchAppointmentEvent(CAL_ID, '', '{}');
         } catch (Exception ex) { caught = ex; }
+
         Assert.isNotNull(caught);
         Assert.isTrue(caught.getMessage().contains('Event ID'));
     }
@@ -212,6 +229,7 @@ private class GoogleCalendarServiceTest {
         try {
             GoogleCalendarService.patchAppointmentEvent(CAL_ID, EVENT_ID, '');
         } catch (Exception ex) { caught = ex; }
+
         Assert.isNotNull(caught);
         Assert.isTrue(caught.getMessage().contains('Patch body'));
     }
@@ -223,6 +241,7 @@ private class GoogleCalendarServiceTest {
         DateTime endDt = DateTime.newInstanceGmt(2026, 3, 21, 11, 0, 0);
         GoogleCalendarModels.EventRequest req = GoogleCalendarService.buildEventRequest(
             'John Doe', 'Smith', 'Cardiology', start, endDt, 'UTC', 'john@example.com');
+
         Assert.isTrue(req.summary.contains('John Doe'));
         Assert.isTrue(req.description.contains('Dr. Smith'));
         Assert.areEqual(1, req.attendees.size());
@@ -235,6 +254,7 @@ private class GoogleCalendarServiceTest {
         DateTime endDt = DateTime.newInstanceGmt(2026, 3, 21, 11, 0, 0);
         GoogleCalendarModels.EventRequest req = GoogleCalendarService.buildEventRequest(
             'Jane', 'Jones', 'Dermatology', start, endDt, '', null);
+
         Assert.areEqual(GoogleCalendarService.DEFAULT_TIMEZONE, req.start.timeZone);
     }
 
@@ -244,6 +264,7 @@ private class GoogleCalendarServiceTest {
         DateTime endDt = DateTime.newInstanceGmt(2026, 3, 21, 11, 0, 0);
         GoogleCalendarModels.EventRequest req = GoogleCalendarService.buildEventRequest(
             'Jane', 'Jones', 'Dermatology', start, endDt, 'UTC', '');
+
         Assert.areEqual(0, req.attendees.size());
     }
 
@@ -254,6 +275,7 @@ private class GoogleCalendarServiceTest {
         try {
             GoogleCalendarService.getAvailableSlots('', '2026-03-21', 'UTC');
         } catch (Exception ex) { caught = ex; }
+
         Assert.isNotNull(caught);
         Assert.isTrue(caught.getMessage().contains('Calendar ID'));
     }
@@ -264,6 +286,7 @@ private class GoogleCalendarServiceTest {
         try {
             GoogleCalendarService.getAvailableSlots(CAL_ID, '', 'UTC');
         } catch (Exception ex) { caught = ex; }
+
         Assert.isNotNull(caught);
         Assert.isTrue(caught.getMessage().contains('Date'));
     }
@@ -274,6 +297,7 @@ private class GoogleCalendarServiceTest {
         try {
             GoogleCalendarService.getAvailableSlots(CAL_ID, '2026-03-21', '');
         } catch (Exception ex) { caught = ex; }
+
         Assert.isNotNull(caught);
         Assert.isTrue(caught.getMessage().contains('Timezone'));
     }
@@ -287,8 +311,10 @@ private class GoogleCalendarServiceTest {
         Test.stopTest();
         Integer expected = (GoogleCalendarService.WORK_END_HOUR - GoogleCalendarService.WORK_START_HOUR)
             * 60 / GoogleCalendarService.SLOT_DURATION_MIN;
+
         Assert.areEqual(expected, slots.size());
         for (GoogleCalendarModels.TimeSlot s : slots) {
+
             Assert.isTrue(s.isAvailable);
         }
     }
@@ -306,6 +332,7 @@ private class GoogleCalendarServiceTest {
         for (GoogleCalendarModels.TimeSlot s : slots) {
             if (!s.isAvailable) busyCount++;
         }
+
         Assert.areEqual(2, busyCount);
     }
 
@@ -322,12 +349,14 @@ private class GoogleCalendarServiceTest {
         for (GoogleCalendarModels.TimeSlot s : slots) {
             if (!s.isAvailable) busyCount++;
         }
+
         Assert.areEqual(2, busyCount);
     }
 
     @isTest
     static void parseGoogleDateTime_zSuffix_returnsUtc() {
         DateTime result = GoogleCalendarService.parseGoogleDateTime('2026-03-21T10:00:00Z');
+
         Assert.isNotNull(result);
         Assert.areEqual(DateTime.newInstanceGmt(2026, 3, 21, 10, 0, 0), result);
     }
@@ -335,6 +364,7 @@ private class GoogleCalendarServiceTest {
     @isTest
     static void parseGoogleDateTime_positiveOffset_convertsToUtc() {
         DateTime result = GoogleCalendarService.parseGoogleDateTime('2026-03-21T11:00:00+01:00');
+
         Assert.isNotNull(result);
         Assert.areEqual(DateTime.newInstanceGmt(2026, 3, 21, 10, 0, 0), result);
     }
@@ -342,6 +372,7 @@ private class GoogleCalendarServiceTest {
     @isTest
     static void parseGoogleDateTime_negativeOffset_convertsToUtc() {
         DateTime result = GoogleCalendarService.parseGoogleDateTime('2026-03-21T05:00:00-05:00');
+
         Assert.isNotNull(result);
         Assert.areEqual(DateTime.newInstanceGmt(2026, 3, 21, 10, 0, 0), result);
     }
@@ -349,6 +380,7 @@ private class GoogleCalendarServiceTest {
     @isTest
     static void parseGoogleDateTime_noOffset_returnsParsed() {
         DateTime result = GoogleCalendarService.parseGoogleDateTime('2026-03-21T10:00:00');
+
         Assert.isNotNull(result);
         Assert.areEqual(DateTime.newInstanceGmt(2026, 3, 21, 10, 0, 0), result);
     }
@@ -356,6 +388,7 @@ private class GoogleCalendarServiceTest {
     @isTest
     static void parseGoogleDateTime_malformed_returnsNull() {
         DateTime result = GoogleCalendarService.parseGoogleDateTime('not-a-date');
+
         Assert.isNull(result);
     }
 
