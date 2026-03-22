@@ -49,8 +49,8 @@ private class UtilsTest {
         try {
             Utils.validateAllNotBlank(new Map<String, String>{
                 'First Name' => '',
-                'Last Name'  => null,
-                'Email'      => 'valid@example.com'
+                'Last Name' => null,
+                'Email' => 'valid@example.com'
             });
         } catch (AuraHandledException ex) {
             caught = ex;
@@ -65,7 +65,7 @@ private class UtilsTest {
     static void validateAllNotBlank_doesNotThrowWhenAllPopulated() {
         Utils.validateAllNotBlank(new Map<String, String>{
             'First' => 'John',
-            'Last'  => 'Doe'
+            'Last' => 'Doe'
         });
         Assert.isTrue(true);
     }
@@ -74,25 +74,25 @@ private class UtilsTest {
     static void parseIsoDateTime_parsesWithoutZ() {
         DateTime result = Utils.parseIsoDateTime('2026-03-21T10:30:00');
         Assert.areEqual(2026, result.yearGmt());
-        Assert.areEqual(3,    result.monthGmt());
-        Assert.areEqual(21,   result.dayGmt());
-        Assert.areEqual(10,   result.hourGmt());
-        Assert.areEqual(30,   result.minuteGmt());
+        Assert.areEqual(3, result.monthGmt());
+        Assert.areEqual(21, result.dayGmt());
+        Assert.areEqual(10, result.hourGmt());
+        Assert.areEqual(30, result.minuteGmt());
     }
 
     @isTest
     static void parseIsoDateTime_parsesWithTrailingZ() {
         DateTime result = Utils.parseIsoDateTime('2026-03-21T10:00:00Z');
         Assert.areEqual(2026, result.yearGmt());
-        Assert.areEqual(3,    result.monthGmt());
-        Assert.areEqual(21,   result.dayGmt());
+        Assert.areEqual(3, result.monthGmt());
+        Assert.areEqual(21, result.dayGmt());
     }
 
     @isTest
     static void parseIsoDateTime_throwsOnBlank() {
         AuraHandledException caught;
         try {
-            Utils.parseIsoDateTime('   ');
+            Utils.parseIsoDateTime(' ');
         } catch (AuraHandledException ex) {
             caught = ex;
         }

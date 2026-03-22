@@ -1,9 +1,9 @@
 import { LightningElement, api, track, wire } from 'lwc';
-import { ShowToastEvent }        from 'lightning/platformShowToastEvent';
-import { getRecord }             from 'lightning/uiRecordApi';
-import NAME_FIELD                from '@salesforce/schema/Contact.Name';
-import createAppointment         from '@salesforce/apex/AppointmentController.createAppointment';
-import getPatientRecordTypeId    from '@salesforce/apex/AppointmentController.getPatientRecordTypeId';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+import { getRecord } from 'lightning/uiRecordApi';
+import NAME_FIELD from '@salesforce/schema/Contact.Name';
+import createAppointment from '@salesforce/apex/AppointmentController.createAppointment';
+import getPatientRecordTypeId from '@salesforce/apex/AppointmentController.getPatientRecordTypeId';
 
 export default class AppointmentBooking extends LightningElement {
 
@@ -29,7 +29,7 @@ export default class AppointmentBooking extends LightningElement {
 
     @wire(getRecord, { recordId: '$selectedPatientId', fields: [NAME_FIELD] })
     wiredPatient({ data, error }) {
-        if (data)  this.selectedPatientName = data.fields.Name.value;
+        if (data) this.selectedPatientName = data.fields.Name.value;
         if (error) this.selectedPatientName = '';
     }
 

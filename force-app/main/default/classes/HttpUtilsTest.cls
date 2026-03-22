@@ -4,7 +4,7 @@ private class HttpUtilsTest {
     @isTest
     static void buildRequest_setsAllBaseProperties() {
         HttpRequest req = HttpUtils.buildRequest('GET', 'https://example.com/api', 5000);
-        Assert.areEqual('GET',              req.getMethod());
+        Assert.areEqual('GET', req.getMethod());
         Assert.areEqual('https://example.com/api', req.getEndpoint());
         Assert.areEqual('application/json', req.getHeader('Accept'));
     }
@@ -13,9 +13,9 @@ private class HttpUtilsTest {
     static void buildJsonRequest_addsContentTypeAndBody() {
         String body = '{"key":"value"}';
         HttpRequest req = HttpUtils.buildJsonRequest('POST', 'https://example.com', body, 5000);
-        Assert.areEqual('POST',             req.getMethod());
+        Assert.areEqual('POST', req.getMethod());
         Assert.areEqual('application/json', req.getHeader('Content-Type'));
-        Assert.areEqual(body,               req.getBody());
+        Assert.areEqual(body, req.getBody());
     }
 
     @isTest
@@ -32,7 +32,7 @@ private class HttpUtilsTest {
         res.setBody('{"id":"abc"}');
         HttpUtils.ResponseWrapper w = new HttpUtils.ResponseWrapper(res);
         Assert.isTrue(w.isSuccess);
-        Assert.areEqual(200,         w.statusCode);
+        Assert.areEqual(200, w.statusCode);
         Assert.areEqual('{"id":"abc"}', w.responseBody);
         Assert.isNull(w.errorMessage);
     }

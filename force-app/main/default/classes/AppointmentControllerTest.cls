@@ -1,11 +1,11 @@
 @IsTest
 private class AppointmentControllerTest {
 
-    private static final String SPEC_KEY   = 'Cardiology';
-    private static final String CAL_ID     = 'cal123@group.calendar.google.com';
-    private static final String START_ISO  = '2026-03-21T09:00:00';
-    private static final String END_ISO    = '2026-03-21T10:00:00';
-    private static final String TZ         = 'Europe/London';
+    private static final String SPEC_KEY = 'Cardiology';
+    private static final String CAL_ID = 'cal123@group.calendar.google.com';
+    private static final String START_ISO = '2026-03-21T09:00:00';
+    private static final String END_ISO = '2026-03-21T10:00:00';
+    private static final String TZ = 'Europe/London';
     private static final String EVENT_JSON =
         '{"id":"gcal001","htmlLink":"https://calendar.google.com/event?eid=gcal001"}';
 
@@ -181,17 +181,17 @@ private class AppointmentControllerTest {
             SELECT Status__c, Price__c, Google_Calendar_Event_Id__c,
                    Doctor__c, Patient__c, Notes__c,
                    Specialization__c
-            FROM   Appointment__c
-            WHERE  Id = :apptId
+            FROM Appointment__c
+            WHERE Id = :apptId
         ];
 
         Assert.areEqual('Scheduled', created.Status__c);
-        Assert.areEqual(200,         created.Price__c);
-        Assert.areEqual('gcal001',   created.Google_Calendar_Event_Id__c);
-        Assert.areEqual(doc.Id,      created.Doctor__c);
-        Assert.areEqual(pat.Id,      created.Patient__c);
+        Assert.areEqual(200, created.Price__c);
+        Assert.areEqual('gcal001', created.Google_Calendar_Event_Id__c);
+        Assert.areEqual(doc.Id, created.Doctor__c);
+        Assert.areEqual(pat.Id, created.Patient__c);
         Assert.areEqual('Test notes',created.Notes__c);
-        Assert.areEqual(SPEC_KEY,    created.Specialization__c);
+        Assert.areEqual(SPEC_KEY, created.Specialization__c);
     }
 
     @IsTest
@@ -231,7 +231,7 @@ private class AppointmentControllerTest {
     @IsTest
     static void createAppointment_doctorDeletedBeforeBooking_throwsAura() {
         Contact doc = TestDataFactory.createDoctor(true);
-        Id docId    = doc.Id;
+        Id docId = doc.Id;
         delete doc;
 
         Id patId = TestDataFactory.createPatient(true).Id;

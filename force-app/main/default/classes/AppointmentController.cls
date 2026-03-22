@@ -5,7 +5,7 @@ public with sharing class AppointmentController {
         try {
             return [
                 SELECT Id, MasterLabel, DeveloperName, Price__c
-                FROM   Specialization__mdt
+                FROM Specialization__mdt
                 ORDER BY MasterLabel ASC
             ];
         } catch (Exception ex) {
@@ -19,9 +19,9 @@ public with sharing class AppointmentController {
         try {
             return [
                 SELECT Id FROM RecordType
-                WHERE  SObjectType    = 'Contact'
-                AND    DeveloperName  = 'Patient'
-                LIMIT  1
+                WHERE SObjectType = 'Contact'
+                AND DeveloperName = 'Patient'
+                LIMIT 1
             ].Id;
         } catch (Exception ex) {
             Utils.throwHandled('Could not load Patient record type: ' + ex.getMessage());
@@ -36,10 +36,10 @@ public with sharing class AppointmentController {
             return [
                 SELECT Id, FirstName, LastName, Title, Email,
                        Specialization__c, Google_Calendar_Id__c
-                FROM   Contact
-                WHERE  RecordType.DeveloperName  = 'Doctor'
-                AND    Specialization__c          = :specialization
-                AND    Google_Calendar_Id__c     != null
+                FROM Contact
+                WHERE RecordType.DeveloperName = 'Doctor'
+                AND Specialization__c = :specialization
+                AND Google_Calendar_Id__c != null
                 ORDER BY LastName ASC
             ];
         } catch (Exception ex) {
@@ -50,37 +50,37 @@ public with sharing class AppointmentController {
 
     @AuraEnabled
     public static Id createAppointment(
-            Id      doctorId,
-            Id      patientId,
-            String  specialization,
+            Id doctorId,
+            Id patientId,
+            String specialization,
             Decimal price,
-            String  calendarId,
-            String  startIso,
-            String  endIso,
-            String  timeZone,
-            String  notes) {
+            String calendarId,
+            String startIso,
+            String endIso,
+            String timeZone,
+            String notes) {
 
-        if (doctorId  == null) Utils.throwHandled('Doctor is required.');
+        if (doctorId == null) Utils.throwHandled('Doctor is required.');
         if (patientId == null) Utils.throwHandled('Patient is required.');
-        Utils.validateNotBlank(calendarId,    'Calendar ID');
-        Utils.validateNotBlank(startIso,      'Start time');
-        Utils.validateNotBlank(endIso,        'End time');
+        Utils.validateNotBlank(calendarId, 'Calendar ID');
+        Utils.validateNotBlank(startIso, 'Start time');
+        Utils.validateNotBlank(endIso, 'End time');
         Utils.validateNotBlank(specialization,'Specialization');
 
         try {
             String tz = String.isNotBlank(timeZone) ? timeZone : 'Europe/London';
 
-            Contact doctor  = [SELECT FirstName, LastName FROM Contact WHERE Id = :doctorId  LIMIT 1];
+            Contact doctor = [SELECT FirstName, LastName FROM Contact WHERE Id = :doctorId LIMIT 1];
             Contact patient = [SELECT FirstName, LastName, Email FROM Contact WHERE Id = :patientId LIMIT 1];
 
             DateTime startProxy = Utils.parseIsoDateTime(startIso);
-            DateTime endProxy   = Utils.parseIsoDateTime(endIso);
+            DateTime endProxy = Utils.parseIsoDateTime(endIso);
             System.Timezone tzObj = System.Timezone.getTimeZone(tz);
             DateTime startUtc = startProxy.addSeconds(-tzObj.getOffset(startProxy) / 1000);
-            DateTime endUtc   = endProxy.addSeconds(  -tzObj.getOffset(endProxy)   / 1000);
+            DateTime endUtc = endProxy.addSeconds( -tzObj.getOffset(endProxy) / 1000);
 
             String patientName = patient.FirstName + ' ' + patient.LastName;
-            String doctorName  = doctor.FirstName  + ' ' + doctor.LastName;
+            String doctorName = doctor.FirstName + ' ' + doctor.LastName;
             GoogleCalendarModels.EventRequest request = GoogleCalendarService.buildEventRequest(
                 patientName, doctorName, specialization, startUtc, endUtc, tz, patient.Email
             );
@@ -88,15 +88,15 @@ public with sharing class AppointmentController {
                 GoogleCalendarService.createAppointmentEvent(calendarId, request);
 
             Appointment__c appt = new Appointment__c(
-                Doctor__c                   = doctorId,
-                Patient__c                  = patientId,
-                Specialization__c           = specialization,
-                Price__c                    = price,
-                Start_Time__c               = startUtc,
-                End_Time__c                 = endUtc,
+                Doctor__c = doctorId,
+                Patient__c = patientId,
+                Specialization__c = specialization,
+                Price__c = price,
+                Start_Time__c = startUtc,
+                End_Time__c = endUtc,
                 Google_Calendar_Event_Id__c = gcalResp.id,
-                Status__c                   = 'Scheduled',
-                Notes__c                    = notes
+                Status__c = 'Scheduled',
+                Notes__c = notes
             );
             insert appt;
             return appt.Id;

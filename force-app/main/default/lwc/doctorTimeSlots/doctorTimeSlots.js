@@ -15,10 +15,10 @@ export default class DoctorTimeSlots extends LightningElement {
 
     // today's date as YYYY-MM-DD in local time (used as date input min)
     get today() {
-        const now   = new Date();
-        const year  = now.getFullYear();
+        const now = new Date();
+        const year = now.getFullYear();
         const month = String(now.getMonth() + 1).padStart(2, '0');
-        const day   = String(now.getDate()).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
         return `${year}-${month}-${day}`;
     }
 

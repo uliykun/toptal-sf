@@ -1,8 +1,8 @@
 @isTest
 private class GoogleCalendarServiceTest {
 
-    private static final String CAL_ID    = 'primary';
-    private static final String EVENT_ID  = 'evt123';
+    private static final String CAL_ID = 'primary';
+    private static final String EVENT_ID = 'evt123';
     private static final String VALID_JSON =
         '{"id":"evt1","status":"confirmed","htmlLink":"https://cal.google.com/event/evt1"}';
 
@@ -229,7 +229,7 @@ private class GoogleCalendarServiceTest {
             'John Doe', 'Smith', 'Cardiology', start, endDt, 'UTC', 'john@example.com');
         Assert.isTrue(req.summary.contains('John Doe'));
         Assert.isTrue(req.description.contains('Dr. Smith'));
-        Assert.areEqual(1,                req.attendees.size());
+        Assert.areEqual(1, req.attendees.size());
         Assert.areEqual('john@example.com', req.attendees[0].email);
     }
 

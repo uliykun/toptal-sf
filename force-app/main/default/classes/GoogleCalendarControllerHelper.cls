@@ -10,13 +10,13 @@ public with sharing class GoogleCalendarControllerHelper {
             String timeZone) {
 
         Utils.validateAllNotBlank(new Map<String, String>{
-            'Calendar ID'       => calendarId,
-            'Patient name'      => patientName,
-            'Physician name'    => physicianName,
-            'Specialization'    => specialization,
+            'Calendar ID' => calendarId,
+            'Patient name' => patientName,
+            'Physician name' => physicianName,
+            'Specialization' => specialization,
             'Appointment start' => startIso,
-            'Appointment end'   => endIso,
-            'Timezone'          => timeZone
+            'Appointment end' => endIso,
+            'Timezone' => timeZone
         });
     }
 
@@ -34,14 +34,14 @@ public with sharing class GoogleCalendarControllerHelper {
     }
 
     public static String orchestrateCreateEvent(
-            String   calendarId,
-            String   patientName,
-            String   physicianName,
-            String   specialization,
+            String calendarId,
+            String patientName,
+            String physicianName,
+            String specialization,
             DateTime startDt,
             DateTime endDt,
-            String   timeZone,
-            String   patientEmail) {
+            String timeZone,
+            String patientEmail) {
 
         GoogleCalendarModels.EventRequest request = GoogleCalendarService.buildEventRequest(
             patientName, physicianName, specialization, startDt, endDt, timeZone, patientEmail

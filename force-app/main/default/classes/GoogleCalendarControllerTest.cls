@@ -1,9 +1,9 @@
 @isTest
 private class GoogleCalendarControllerTest {
 
-    private static final String CAL_ID    = 'primary';
+    private static final String CAL_ID = 'primary';
     private static final String START_ISO = '2026-03-21T10:00:00';
-    private static final String END_ISO   = '2026-03-21T11:00:00';
+    private static final String END_ISO = '2026-03-21T11:00:00';
     private static final String EVENT_JSON =
         '{"id":"evt1","status":"confirmed","htmlLink":"https://cal.google.com/event"}';
 

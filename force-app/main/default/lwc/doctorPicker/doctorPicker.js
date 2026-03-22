@@ -15,7 +15,7 @@ export default class DoctorPicker extends LightningElement {
     }
     set specialization(value) {
         this._specialization = value;
-        this.selectedId = null;   // reset selection when specialization changes
+        this.selectedId = null; // reset selection when specialization changes
         this.errorMessage = '';
     }
 

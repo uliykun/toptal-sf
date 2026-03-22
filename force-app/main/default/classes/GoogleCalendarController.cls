@@ -16,7 +16,7 @@ public with sharing class GoogleCalendarController {
                 specialization, startIso, endIso, timeZone
             );
             DateTime startDt = Utils.parseIsoDateTime(startIso);
-            DateTime endDt   = Utils.parseIsoDateTime(endIso);
+            DateTime endDt = Utils.parseIsoDateTime(endIso);
             GoogleCalendarControllerHelper.validateTimeWindow(startDt, endDt);
             return GoogleCalendarControllerHelper.orchestrateCreateEvent(
                 calendarId, patientName, physicianName, specialization,

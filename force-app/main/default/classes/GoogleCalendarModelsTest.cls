@@ -13,7 +13,7 @@ private class GoogleCalendarModelsTest {
         DateTime dt = DateTime.newInstanceGmt(2026, 3, 21, 10, 0, 0);
         GoogleCalendarModels.EventDateTime edt = new GoogleCalendarModels.EventDateTime(dt, 'UTC');
         Assert.areEqual('2026-03-21T10:00:00', edt.dateTimeStr);
-        Assert.areEqual('UTC',                 edt.timeZone);
+        Assert.areEqual('UTC', edt.timeZone);
     }
 
     @isTest
@@ -35,7 +35,7 @@ private class GoogleCalendarModelsTest {
         GoogleCalendarModels.EventRequest req = new GoogleCalendarModels.EventRequest(
             'My Summary', 'My Description', start, endDt, 'UTC'
         );
-        Assert.areEqual('My Summary',     req.summary);
+        Assert.areEqual('My Summary', req.summary);
         Assert.areEqual('My Description', req.description);
         Assert.isNotNull(req.start);
         Assert.isNotNull(req.endTime);
@@ -50,7 +50,7 @@ private class GoogleCalendarModelsTest {
             'S', 'D', start, endDt, 'UTC'
         );
         req.addAttendee('patient@example.com');
-        Assert.areEqual(1,                    req.attendees.size());
+        Assert.areEqual(1, req.attendees.size());
         Assert.areEqual('patient@example.com', req.attendees[0].email);
     }
 
@@ -163,7 +163,7 @@ private class GoogleCalendarModelsTest {
     @isTest
     static void timeSlot_constructor_setsAllFields() {
         DateTime slotStart = DateTime.newInstanceGmt(2026, 3, 21, 9, 0, 0);
-        DateTime slotEnd   = DateTime.newInstanceGmt(2026, 3, 21, 9, 30, 0);
+        DateTime slotEnd = DateTime.newInstanceGmt(2026, 3, 21, 9, 30, 0);
         GoogleCalendarModels.TimeSlot slot =
             new GoogleCalendarModels.TimeSlot(slotStart, slotEnd, 'UTC', true);
         Assert.areEqual('2026-03-21T09:00:00', slot.startIso);
@@ -175,7 +175,7 @@ private class GoogleCalendarModelsTest {
     @isTest
     static void timeSlot_isAvailableFalse_whenBooked() {
         DateTime slotStart = DateTime.newInstanceGmt(2026, 3, 21, 10, 0, 0);
-        DateTime slotEnd   = DateTime.newInstanceGmt(2026, 3, 21, 10, 30, 0);
+        DateTime slotEnd = DateTime.newInstanceGmt(2026, 3, 21, 10, 30, 0);
         GoogleCalendarModels.TimeSlot slot =
             new GoogleCalendarModels.TimeSlot(slotStart, slotEnd, 'UTC', false);
         Assert.isFalse(slot.isAvailable);

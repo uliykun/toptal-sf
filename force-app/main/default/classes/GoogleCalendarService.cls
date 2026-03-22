@@ -1,14 +1,14 @@
 public with sharing class GoogleCalendarService {
 
-    @TestVisible private static final String  NAMED_CREDENTIAL  = 'Google_Calendar_API';
-    @TestVisible private static final String  DEFAULT_TIMEZONE  = 'UTC';
-    @TestVisible static final Integer WORK_START_HOUR           = 9;
-    @TestVisible static final Integer WORK_END_HOUR             = 17;
-    @TestVisible static final Integer SLOT_DURATION_MIN         = 30;
+    @TestVisible private static final String NAMED_CREDENTIAL = 'Google_Calendar_API';
+    @TestVisible private static final String DEFAULT_TIMEZONE = 'UTC';
+    @TestVisible static final Integer WORK_START_HOUR = 9;
+    @TestVisible static final Integer WORK_END_HOUR = 17;
+    @TestVisible static final Integer SLOT_DURATION_MIN = 30;
 
-    private static final String  EVENTS_PATH          = '/calendar/v3/calendars/{0}/events';
-    private static final String  EVENT_RESOURCE_PATH  = '/calendar/v3/calendars/{0}/events/{1}';
-    private static final Integer TIMEOUT_MS           = 20000;
+    private static final String EVENTS_PATH = '/calendar/v3/calendars/{0}/events';
+    private static final String EVENT_RESOURCE_PATH = '/calendar/v3/calendars/{0}/events/{1}';
+    private static final Integer TIMEOUT_MS = 20000;
 
     public static GoogleCalendarModels.EventResponse createAppointmentEvent(
             String calendarId,
@@ -31,7 +31,7 @@ public with sharing class GoogleCalendarService {
         Utils.validateNotBlank(timeMaxUtc, 'timeMax');
 
         String queryParams = 'timeMin=' + EncodingUtil.urlEncode(timeMinUtc, 'UTF-8')
-            + '&timeMax='     + EncodingUtil.urlEncode(timeMaxUtc, 'UTF-8')
+            + '&timeMax=' + EncodingUtil.urlEncode(timeMaxUtc, 'UTF-8')
             + '&singleEvents=true&orderBy=startTime';
 
         HttpUtils.ResponseWrapper raw = callListEvents(calendarId, queryParams);
@@ -49,22 +49,22 @@ public with sharing class GoogleCalendarService {
             String eventId,
             String patchJsonBody) {
 
-        Utils.validateNotBlank(calendarId,    'Calendar ID');
-        Utils.validateNotBlank(eventId,       'Event ID');
+        Utils.validateNotBlank(calendarId, 'Calendar ID');
+        Utils.validateNotBlank(eventId, 'Event ID');
         Utils.validateNotBlank(patchJsonBody, 'Patch body');
         return parseAndAssertSuccess(callPatchEvent(calendarId, eventId, patchJsonBody));
     }
 
     public static GoogleCalendarModels.EventRequest buildEventRequest(
-            String   patientName,
-            String   physicianName,
-            String   specialization,
+            String patientName,
+            String physicianName,
+            String specialization,
             DateTime startDt,
             DateTime endDt,
-            String   timeZone,
-            String   patientEmail) {
+            String timeZone,
+            String patientEmail) {
 
-        String tz   = String.isNotBlank(timeZone) ? timeZone : DEFAULT_TIMEZONE;
+        String tz = String.isNotBlank(timeZone) ? timeZone : DEFAULT_TIMEZONE;
         GoogleCalendarModels.EventRequest request = new GoogleCalendarModels.EventRequest(
             buildSummary(specialization, patientName),
             buildDescription(patientName, physicianName, specialization),
@@ -80,20 +80,20 @@ public with sharing class GoogleCalendarService {
             String timeZone) {
 
         Utils.validateNotBlank(calendarId, 'Calendar ID');
-        Utils.validateNotBlank(dateStr,    'Date');
-        Utils.validateNotBlank(timeZone,   'Timezone');
+        Utils.validateNotBlank(dateStr, 'Date');
+        Utils.validateNotBlank(timeZone, 'Timezone');
 
         Date d = Date.valueOf(dateStr);
 
         DateTime workStartProxy = DateTime.newInstanceGmt(d.year(), d.month(), d.day(), WORK_START_HOUR, 0, 0);
-        DateTime workEndProxy   = DateTime.newInstanceGmt(d.year(), d.month(), d.day(), WORK_END_HOUR,   0, 0);
+        DateTime workEndProxy = DateTime.newInstanceGmt(d.year(), d.month(), d.day(), WORK_END_HOUR, 0, 0);
 
         System.Timezone tz = System.Timezone.getTimeZone(timeZone);
         DateTime workStartUtc = workStartProxy.addSeconds(-tz.getOffset(workStartProxy) / 1000);
-        DateTime workEndUtc   = workEndProxy.addSeconds(  -tz.getOffset(workEndProxy)   / 1000);
+        DateTime workEndUtc = workEndProxy.addSeconds( -tz.getOffset(workEndProxy) / 1000);
 
         String timeMin = workStartUtc.format('yyyy-MM-dd\'T\'HH:mm:ss') + 'Z';
-        String timeMax = workEndUtc.format('yyyy-MM-dd\'T\'HH:mm:ss')   + 'Z';
+        String timeMax = workEndUtc.format('yyyy-MM-dd\'T\'HH:mm:ss') + 'Z';
 
         String rawJson = listEventsRaw(calendarId, timeMin, timeMax);
         List<BusyRange> busyRanges = extractBusyRanges(rawJson);
@@ -107,17 +107,17 @@ public with sharing class GoogleCalendarService {
         if (items == null || items.isEmpty()) return ranges;
 
         for (Object item : items) {
-            Map<String, Object> evt      = (Map<String, Object>) item;
+            Map<String, Object> evt = (Map<String, Object>) item;
             Map<String, Object> startObj = (Map<String, Object>) evt.get('start');
-            Map<String, Object> endObj   = (Map<String, Object>) evt.get('end');
+            Map<String, Object> endObj = (Map<String, Object>) evt.get('end');
             if (startObj == null || endObj == null) continue;
 
             String startStr = (String) startObj.get('dateTime');
-            String endStr   = (String) endObj.get('dateTime');
+            String endStr = (String) endObj.get('dateTime');
             if (String.isBlank(startStr) || String.isBlank(endStr)) continue;
 
             DateTime evtStart = parseGoogleDateTime(startStr);
-            DateTime evtEnd   = parseGoogleDateTime(endStr);
+            DateTime evtEnd = parseGoogleDateTime(endStr);
             if (evtStart == null || evtEnd == null) continue;
 
             ranges.add(new BusyRange(evtStart.getTime(), evtEnd.getTime()));
@@ -131,12 +131,12 @@ public with sharing class GoogleCalendarService {
             if (s.endsWith('Z')) {
                 return DateTime.valueOf(s.removeEnd('Z').replace('T', ' '));
             }
-            Integer plusIdx  = s.lastIndexOf('+');
+            Integer plusIdx = s.lastIndexOf('+');
             Integer minusIdx = s.lastIndexOf('-');
-            Integer signIdx  = (plusIdx  > 10) ? plusIdx  : ((minusIdx > 10) ? minusIdx : -1);
+            Integer signIdx = (plusIdx > 10) ? plusIdx : ((minusIdx > 10) ? minusIdx : -1);
             if (signIdx > 0) {
-                Integer sign          = (s.substring(signIdx, signIdx + 1) == '+') ? 1 : -1;
-                Integer offsetHours   = Integer.valueOf(s.substring(signIdx + 1, signIdx + 3));
+                Integer sign = (s.substring(signIdx, signIdx + 1) == '+') ? 1 : -1;
+                Integer offsetHours = Integer.valueOf(s.substring(signIdx + 1, signIdx + 3));
                 Integer offsetMinutes = Integer.valueOf(s.substring(signIdx + 4, signIdx + 6));
                 Integer offsetSeconds = (offsetHours * 60 + offsetMinutes) * 60 * sign;
                 DateTime base = DateTime.valueOf(s.substring(0, signIdx).replace('T', ' '));
@@ -151,13 +151,13 @@ public with sharing class GoogleCalendarService {
     private static List<GoogleCalendarModels.TimeSlot> buildSlots(
             DateTime workStartUtc,
             DateTime workEndUtc,
-            String   timeZone,
+            String timeZone,
             List<BusyRange> busyRanges) {
 
         List<GoogleCalendarModels.TimeSlot> slots = new List<GoogleCalendarModels.TimeSlot>();
         DateTime current = workStartUtc;
         while (current < workEndUtc) {
-            DateTime slotEnd  = current.addMinutes(SLOT_DURATION_MIN);
+            DateTime slotEnd = current.addMinutes(SLOT_DURATION_MIN);
             Boolean available = !isSlotBusy(current.getTime(), slotEnd.getTime(), busyRanges);
             slots.add(new GoogleCalendarModels.TimeSlot(current, slotEnd, timeZone, available));
             current = slotEnd;
@@ -212,8 +212,8 @@ public with sharing class GoogleCalendarService {
 
     private static String buildDescription(
             String patientName, String physicianName, String specialization) {
-        return 'Patient: '        + patientName   + '\n'
-             + 'Physician: Dr. '  + physicianName + '\n'
+        return 'Patient: ' + patientName + '\n'
+             + 'Physician: Dr. ' + physicianName + '\n'
              + 'Specialization: ' + specialization;
     }
 

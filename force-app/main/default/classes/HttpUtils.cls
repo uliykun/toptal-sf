@@ -3,13 +3,13 @@ public class HttpUtils {
     public class ResponseWrapper {
         public final Boolean isSuccess;
         public final Integer statusCode;
-        public final String  responseBody;
-        public final String  errorMessage;
+        public final String responseBody;
+        public final String errorMessage;
 
         public ResponseWrapper(HttpResponse res) {
-            this.statusCode   = res.getStatusCode();
+            this.statusCode = res.getStatusCode();
             this.responseBody = res.getBody();
-            this.isSuccess    = (this.statusCode >= 200 && this.statusCode < 300);
+            this.isSuccess = (this.statusCode >= 200 && this.statusCode < 300);
             this.errorMessage = this.isSuccess
                 ? null
                 : 'HTTP ' + this.statusCode + ': ' + res.getStatus();
@@ -17,8 +17,8 @@ public class HttpUtils {
 
         @TestVisible
         ResponseWrapper(String message) {
-            this.isSuccess    = false;
-            this.statusCode   = null;
+            this.isSuccess = false;
+            this.statusCode = null;
             this.responseBody = null;
             this.errorMessage = message;
         }

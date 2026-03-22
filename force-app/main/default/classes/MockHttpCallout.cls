@@ -2,18 +2,18 @@
 public class MockHttpCallout implements HttpCalloutMock {
 
     private final Integer statusCode;
-    private final String  body;
+    private final String body;
     private final Boolean shouldThrow;
 
     public MockHttpCallout(Integer statusCode, String body) {
-        this.statusCode  = statusCode;
-        this.body        = body;
+        this.statusCode = statusCode;
+        this.body = body;
         this.shouldThrow = false;
     }
 
     public MockHttpCallout(Boolean shouldThrow) {
-        this.statusCode  = 0;
-        this.body        = '';
+        this.statusCode = 0;
+        this.body = '';
         this.shouldThrow = shouldThrow;
     }
 
