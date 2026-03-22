@@ -7,12 +7,6 @@ private class GoogleCalendarControllerTest {
     private static final String EVENT_JSON =
         '{"id":"evt1","status":"confirmed","htmlLink":"https://cal.google.com/event"}';
 
-    /**
-     * Throws a non-CalloutException from inside respond().
-     * HttpUtils.send() only catches CalloutException, so this propagates
-     * all the way up to GoogleCalendarController's catch (Exception ex) blocks,
-     * covering the defensive catch-all paths.
-     */
     private class UnexpectedRuntimeException extends Exception {}
 
     private class ThrowingMock implements HttpCalloutMock {
@@ -20,8 +14,6 @@ private class GoogleCalendarControllerTest {
             throw new UnexpectedRuntimeException('Simulated unexpected runtime error');
         }
     }
-
-    // ── createCalendarEvent ───────────────────────────────────────────────────
 
     @isTest
     static void createCalendarEvent_success_returnsHtmlLink() {
@@ -128,8 +120,6 @@ private class GoogleCalendarControllerTest {
         Assert.isTrue(caught.getMessage().contains('Forbidden'));
     }
 
-    // ── getCalendarEvents ─────────────────────────────────────────────────────
-
     @isTest
     static void getCalendarEvents_success_returnsJson() {
         String eventsJson = '{"items":[{"id":"evt1"}]}';
@@ -180,8 +170,6 @@ private class GoogleCalendarControllerTest {
         Assert.isTrue(caught.getMessage().contains('Server Error'));
     }
 
-    // ── getAvailableSlots ─────────────────────────────────────────────────────
-
     @isTest
     static void getAvailableSlots_success_returnsSlots() {
         Test.setMock(HttpCalloutMock.class, new MockHttpCallout(200, '{"items":[]}'));
@@ -211,11 +199,6 @@ private class GoogleCalendarControllerTest {
         Assert.isNotNull(caught);
         Assert.isTrue(caught.getMessage().contains('Date'));
     }
-
-    // ── Unexpected-exception catch-all coverage ───────────────────────────────
-    // These tests use ThrowingMock, which throws a non-CalloutException.
-    // HttpUtils.send() only catches CalloutException, so the raw exception
-    // bypasses the service layer and hits the controller's catch (Exception ex) blocks.
 
     @isTest
     static void createCalendarEvent_unexpectedException_throwsGenericAura() {

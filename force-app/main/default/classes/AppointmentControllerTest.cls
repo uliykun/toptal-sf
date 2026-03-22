@@ -9,8 +9,6 @@ private class AppointmentControllerTest {
     private static final String EVENT_JSON =
         '{"id":"gcal001","htmlLink":"https://calendar.google.com/event?eid=gcal001"}';
 
-    // ─── getSpecializations ───────────────────────────────────────────────────
-
     @IsTest
     static void getSpecializations_returnsNonNullList() {
         Test.startTest();
@@ -19,8 +17,6 @@ private class AppointmentControllerTest {
 
         Assert.isNotNull(specs, 'Should return a non-null list of specializations');
     }
-
-    // ─── getPatientRecordTypeId ───────────────────────────────────────────────
 
     @IsTest
     static void getPatientRecordTypeId_returnsValidId() {
@@ -31,8 +27,6 @@ private class AppointmentControllerTest {
         Assert.isNotNull(rtId, 'Should return the Patient record type Id');
         Assert.areEqual(TestDataFactory.getPatientRecordTypeId(), rtId);
     }
-
-    // ─── getDoctorsBySpecialization ───────────────────────────────────────────
 
     @IsTest
     static void getDoctorsBySpecialization_returnsMatchingDoctors() {
@@ -80,8 +74,6 @@ private class AppointmentControllerTest {
 
         Assert.isNotNull(caught, 'Should throw for null specialization');
     }
-
-    // ─── createAppointment — validation ───────────────────────────────────────
 
     @IsTest
     static void createAppointment_nullDoctorId_throws() {
@@ -171,8 +163,6 @@ private class AppointmentControllerTest {
         Assert.isTrue(caught.getMessage().contains('Specialization'));
     }
 
-    // ─── createAppointment — success ──────────────────────────────────────────
-
     @IsTest
     static void createAppointment_success_insertsRecordAndReturnsId() {
         Contact doc = TestDataFactory.createDoctor(true);
@@ -240,9 +230,6 @@ private class AppointmentControllerTest {
 
     @IsTest
     static void createAppointment_doctorDeletedBeforeBooking_throwsAura() {
-        // Insert a doctor then delete it. The ID is valid format and passes the null check,
-        // but the SOQL on line 92 returns 0 rows → System.QueryException (not AuraHandledException)
-        // → hits the general catch (Exception ex) block, covering lines 128-133.
         Contact doc = TestDataFactory.createDoctor(true);
         Id docId    = doc.Id;
         delete doc;
@@ -271,7 +258,7 @@ private class AppointmentControllerTest {
             AppointmentController.createAppointment(
                 doc.Id, pat.Id, SPEC_KEY, 200, CAL_ID, START_ISO, END_ISO, TZ, null
             );
-        } catch (AuraHandledException ex) { /* expected */ }
+        } catch (AuraHandledException ex) {}
         Test.stopTest();
 
         Integer count = [SELECT COUNT() FROM Appointment__c WHERE Doctor__c = :doc.Id];

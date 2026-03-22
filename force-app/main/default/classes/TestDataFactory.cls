@@ -1,10 +1,6 @@
-// Factory for creating test SObjects.
-// createXxx(true) inserts the record and returns it with a real Id.
-// createXxx(false) returns an in-memory record without any DML.
 @IsTest
 public class TestDataFactory {
 
-    // record type IDs — lazy-loaded once per test transaction
     private static Id doctorRecordTypeId;
     private static Id patientRecordTypeId;
 
@@ -32,7 +28,6 @@ public class TestDataFactory {
         return patientRecordTypeId;
     }
 
-    // Doctor Contact with Cardiology specialization and a Google Calendar ID
     public static Contact createDoctor(Boolean doInsert) {
         Contact doc = new Contact(
             FirstName = 'James',
@@ -46,7 +41,6 @@ public class TestDataFactory {
         return doc;
     }
 
-    // Patient Contact
     public static Contact createPatient(Boolean doInsert) {
         Contact pat = new Contact(
             FirstName = 'Jane',

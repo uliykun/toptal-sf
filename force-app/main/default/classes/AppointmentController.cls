@@ -1,9 +1,5 @@
 public with sharing class AppointmentController {
 
-    /**
-     * Returns all Specialization custom metadata records ordered alphabetically.
-     * Cacheable — safe to wire directly in LWC.
-     */
     @AuraEnabled(cacheable=true)
     public static List<Specialization__mdt> getSpecializations() {
         try {
@@ -18,11 +14,6 @@ public with sharing class AppointmentController {
         }
     }
 
-    /**
-     * Returns the Id of the Patient Contact record type.
-     * Used by the LWC record-picker filter (which requires RecordTypeId, not DeveloperName).
-     * Cacheable — safe to wire directly in LWC.
-     */
     @AuraEnabled(cacheable=true)
     public static Id getPatientRecordTypeId() {
         try {
@@ -38,11 +29,6 @@ public with sharing class AppointmentController {
         }
     }
 
-    /**
-     * Returns Doctor contacts for a given specialization.
-     * Only returns doctors who have a Google Calendar ID configured.
-     * Cacheable — safe to wire directly in LWC.
-     */
     @AuraEnabled(cacheable=true)
     public static List<Contact> getDoctorsBySpecialization(String specialization) {
         Utils.validateNotBlank(specialization, 'Specialization');
@@ -62,10 +48,6 @@ public with sharing class AppointmentController {
         }
     }
 
-    /**
-     * Creates an Appointment__c record and a matching Google Calendar event atomically.
-     * Converts the local ISO times to UTC using the supplied timezone before persisting.
-     */
     @AuraEnabled
     public static Id createAppointment(
             Id      doctorId,
@@ -88,18 +70,15 @@ public with sharing class AppointmentController {
         try {
             String tz = String.isNotBlank(timeZone) ? timeZone : 'Europe/London';
 
-            // Fetch doctor and patient names for the calendar event title/description
             Contact doctor  = [SELECT FirstName, LastName FROM Contact WHERE Id = :doctorId  LIMIT 1];
             Contact patient = [SELECT FirstName, LastName, Email FROM Contact WHERE Id = :patientId LIMIT 1];
 
-            // Parse local ISO strings and convert to true UTC using the timezone offset
             DateTime startProxy = Utils.parseIsoDateTime(startIso);
             DateTime endProxy   = Utils.parseIsoDateTime(endIso);
             System.Timezone tzObj = System.Timezone.getTimeZone(tz);
             DateTime startUtc = startProxy.addSeconds(-tzObj.getOffset(startProxy) / 1000);
             DateTime endUtc   = endProxy.addSeconds(  -tzObj.getOffset(endProxy)   / 1000);
 
-            // Create Google Calendar event
             String patientName = patient.FirstName + ' ' + patient.LastName;
             String doctorName  = doctor.FirstName  + ' ' + doctor.LastName;
             GoogleCalendarModels.EventRequest request = GoogleCalendarService.buildEventRequest(
@@ -108,7 +87,6 @@ public with sharing class AppointmentController {
             GoogleCalendarModels.EventResponse gcalResp =
                 GoogleCalendarService.createAppointmentEvent(calendarId, request);
 
-            // Persist Appointment record
             Appointment__c appt = new Appointment__c(
                 Doctor__c                   = doctorId,
                 Patient__c                  = patientId,
