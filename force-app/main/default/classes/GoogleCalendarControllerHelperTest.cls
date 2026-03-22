@@ -1,8 +1,6 @@
 @isTest
 private class GoogleCalendarControllerHelperTest {
 
-    // ── validateCreateEventInputs ─────────────────────────────────────────────
-
     @isTest
     static void validateCreateEventInputs_allValid_noException() {
         Exception caught;
@@ -53,7 +51,6 @@ private class GoogleCalendarControllerHelperTest {
         Assert.isNotNull(caught);
     }
 
-    // ── validateTimeWindow ────────────────────────────────────────────────────
 
     @isTest
     static void validateTimeWindow_endBeforeStart_throws() {
@@ -89,7 +86,6 @@ private class GoogleCalendarControllerHelperTest {
         Assert.isNull(caught);
     }
 
-    // ── orchestrateCreateEvent ────────────────────────────────────────────────
 
     @isTest
     static void orchestrateCreateEvent_success_returnsHtmlLink() {
@@ -107,7 +103,6 @@ private class GoogleCalendarControllerHelperTest {
         Assert.areEqual('https://cal.google.com/event', link);
     }
 
-    // ── orchestrateGetSlots ───────────────────────────────────────────────────
 
     @isTest
     static void orchestrateGetSlots_success_returnsSlots() {

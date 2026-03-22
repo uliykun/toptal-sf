@@ -6,7 +6,6 @@ private class GoogleCalendarServiceTest {
     private static final String VALID_JSON =
         '{"id":"evt1","status":"confirmed","htmlLink":"https://cal.google.com/event/evt1"}';
 
-    // ── createAppointmentEvent ────────────────────────────────────────────────
 
     @isTest
     static void createAppointmentEvent_success_returnsResponse() {
@@ -105,7 +104,6 @@ private class GoogleCalendarServiceTest {
         Assert.isTrue(caught.getMessage().contains('parse'));
     }
 
-    // ── listEventsRaw ─────────────────────────────────────────────────────────
 
     @isTest
     static void listEventsRaw_success_returnsBody() {
@@ -177,7 +175,6 @@ private class GoogleCalendarServiceTest {
         Assert.isTrue(caught.getMessage().contains('400'));
     }
 
-    // ── patchAppointmentEvent ─────────────────────────────────────────────────
 
     @isTest
     static void patchAppointmentEvent_success_returnsResponse() {
@@ -219,7 +216,6 @@ private class GoogleCalendarServiceTest {
         Assert.isTrue(caught.getMessage().contains('Patch body'));
     }
 
-    // ── buildEventRequest ─────────────────────────────────────────────────────
 
     @isTest
     static void buildEventRequest_withAttendee_setsAllFields() {
@@ -251,7 +247,6 @@ private class GoogleCalendarServiceTest {
         Assert.areEqual(0, req.attendees.size());
     }
 
-    // ── getAvailableSlots ─────────────────────────────────────────────────────
 
     @isTest
     static void getAvailableSlots_blankCalendarId_throws() {
@@ -364,7 +359,6 @@ private class GoogleCalendarServiceTest {
         Assert.isNull(result);
     }
 
-    // ── helpers ───────────────────────────────────────────────────────────────
 
     private static GoogleCalendarModels.EventRequest makeRequest() {
         DateTime start = DateTime.newInstanceGmt(2026, 3, 21, 10, 0, 0);
