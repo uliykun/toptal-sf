@@ -1,27 +1,13 @@
 public with sharing class GoogleCalendarController {
 
     @AuraEnabled
-    public static String createCalendarEvent(
-            String calendarId,
-            String patientName,
-            String physicianName,
-            String specialization,
-            String startIso,
-            String endIso,
-            String timeZone,
-            String patientEmail) {
+    public static String createCalendarEvent(GoogleCalendarModels.CreateEventInput input) {
         try {
-            GoogleCalendarControllerHelper.validateCreateEventInputs(
-                calendarId, patientName, physicianName,
-                specialization, startIso, endIso, timeZone
-            );
-            DateTime startDt = Utils.parseIsoDateTime(startIso);
-            DateTime endDt = Utils.parseIsoDateTime(endIso);
+            GoogleCalendarControllerHelper.validateCreateEventInputs(input);
+            DateTime startDt = Utils.parseIsoDateTime(input.startIso);
+            DateTime endDt = Utils.parseIsoDateTime(input.endIso);
             GoogleCalendarControllerHelper.validateTimeWindow(startDt, endDt);
-            return GoogleCalendarControllerHelper.orchestrateCreateEvent(
-                calendarId, patientName, physicianName, specialization,
-                startDt, endDt, timeZone, patientEmail
-            );
+            return GoogleCalendarControllerHelper.orchestrateCreateEvent(input, startDt, endDt);
         } catch (AuraHandledException ex) {
             throw ex;
         } catch (Exception ex) {

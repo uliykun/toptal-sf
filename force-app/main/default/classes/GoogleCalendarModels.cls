@@ -134,4 +134,34 @@ public class GoogleCalendarModels {
     public static EventResponse parseEventResponse(String jsonBody) {
         return (EventResponse) JSON.deserialize(jsonBody, EventResponse.class);
     }
+
+    public class CreateEventInput {
+        public String calendarId;
+        public String patientName;
+        public String physicianName;
+        public String specialization;
+        public String startIso;
+        public String endIso;
+        public String timeZone;
+        public String patientEmail;
+
+        public CreateEventInput(
+                String calendarId,
+                String patientName,
+                String physicianName,
+                String specialization,
+                String startIso,
+                String endIso,
+                String timeZone,
+                String patientEmail) {
+            this.calendarId = calendarId;
+            this.patientName = patientName;
+            this.physicianName = physicianName;
+            this.specialization = specialization;
+            this.startIso = startIso;
+            this.endIso = endIso;
+            this.timeZone = timeZone;
+            this.patientEmail = patientEmail;
+        }
+    }
 }

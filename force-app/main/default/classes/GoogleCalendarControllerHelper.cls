@@ -1,22 +1,14 @@
 public with sharing class GoogleCalendarControllerHelper {
 
-    public static void validateCreateEventInputs(
-            String calendarId,
-            String patientName,
-            String physicianName,
-            String specialization,
-            String startIso,
-            String endIso,
-            String timeZone) {
-
+    public static void validateCreateEventInputs(GoogleCalendarModels.CreateEventInput input) {
         Utils.validateAllNotBlank(new Map<String, String>{
-            'Calendar ID' => calendarId,
-            'Patient name' => patientName,
-            'Physician name' => physicianName,
-            'Specialization' => specialization,
-            'Appointment start' => startIso,
-            'Appointment end' => endIso,
-            'Timezone' => timeZone
+            'Calendar ID' => input.calendarId,
+            'Patient name' => input.patientName,
+            'Physician name' => input.physicianName,
+            'Specialization' => input.specialization,
+            'Appointment start' => input.startIso,
+            'Appointment end' => input.endIso,
+            'Timezone' => input.timeZone
         });
     }
 
@@ -34,20 +26,16 @@ public with sharing class GoogleCalendarControllerHelper {
     }
 
     public static String orchestrateCreateEvent(
-            String calendarId,
-            String patientName,
-            String physicianName,
-            String specialization,
+            GoogleCalendarModels.CreateEventInput input,
             DateTime startDt,
-            DateTime endDt,
-            String timeZone,
-            String patientEmail) {
+            DateTime endDt) {
 
         GoogleCalendarModels.EventRequest request = GoogleCalendarService.buildEventRequest(
-            patientName, physicianName, specialization, startDt, endDt, timeZone, patientEmail
+            input.patientName, input.physicianName, input.specialization,
+            startDt, endDt, input.timeZone, input.patientEmail
         );
         GoogleCalendarModels.EventResponse response =
-            GoogleCalendarService.createAppointmentEvent(calendarId, request);
+            GoogleCalendarService.createAppointmentEvent(input.calendarId, request);
         return response.htmlLink;
     }
 }

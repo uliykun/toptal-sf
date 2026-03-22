@@ -196,4 +196,32 @@ private class GoogleCalendarModelsTest {
 
         Assert.isFalse(slot.isAvailable);
     }
+
+
+    @isTest
+    static void createEventInput_constructor_setsAllFields() {
+        GoogleCalendarModels.CreateEventInput input = new GoogleCalendarModels.CreateEventInput(
+            'primary', 'John Doe', 'Dr. Smith', 'Cardiology',
+            '2026-03-21T10:00:00', '2026-03-21T11:00:00', 'UTC', 'john@example.com'
+        );
+
+        Assert.areEqual('primary', input.calendarId);
+        Assert.areEqual('John Doe', input.patientName);
+        Assert.areEqual('Dr. Smith', input.physicianName);
+        Assert.areEqual('Cardiology', input.specialization);
+        Assert.areEqual('2026-03-21T10:00:00', input.startIso);
+        Assert.areEqual('2026-03-21T11:00:00', input.endIso);
+        Assert.areEqual('UTC', input.timeZone);
+        Assert.areEqual('john@example.com', input.patientEmail);
+    }
+
+    @isTest
+    static void createEventInput_nullPatientEmail_isAllowed() {
+        GoogleCalendarModels.CreateEventInput input = new GoogleCalendarModels.CreateEventInput(
+            'primary', 'John Doe', 'Dr. Smith', 'Cardiology',
+            '2026-03-21T10:00:00', '2026-03-21T11:00:00', 'UTC', null
+        );
+
+        Assert.isNull(input.patientEmail);
+    }
 }

@@ -20,8 +20,10 @@ private class GoogleCalendarControllerTest {
         Test.setMock(HttpCalloutMock.class, new MockHttpCallout(200, EVENT_JSON));
         Test.startTest();
         String result = GoogleCalendarController.createCalendarEvent(
-            CAL_ID, 'John Doe', 'Smith', 'Cardiology',
-            START_ISO, END_ISO, 'UTC', 'john@example.com'
+            new GoogleCalendarModels.CreateEventInput(
+                CAL_ID, 'John Doe', 'Smith', 'Cardiology',
+                START_ISO, END_ISO, 'UTC', 'john@example.com'
+            )
         );
         Test.stopTest();
 
@@ -33,8 +35,10 @@ private class GoogleCalendarControllerTest {
         Exception caught;
         try {
             GoogleCalendarController.createCalendarEvent(
-                CAL_ID, '', 'Smith', 'Cardiology',
-                START_ISO, END_ISO, 'UTC', null
+                new GoogleCalendarModels.CreateEventInput(
+                    CAL_ID, '', 'Smith', 'Cardiology',
+                    START_ISO, END_ISO, 'UTC', null
+                )
             );
         } catch (AuraHandledException ex) { caught = ex; }
 
@@ -47,7 +51,9 @@ private class GoogleCalendarControllerTest {
         Exception caught;
         try {
             GoogleCalendarController.createCalendarEvent(
-                '', '', '', '', '', '', '', null
+                new GoogleCalendarModels.CreateEventInput(
+                    '', '', '', '', '', '', '', null
+                )
             );
         } catch (AuraHandledException ex) { caught = ex; }
 
@@ -59,8 +65,10 @@ private class GoogleCalendarControllerTest {
         Exception caught;
         try {
             GoogleCalendarController.createCalendarEvent(
-                CAL_ID, 'John', 'Smith', 'Cardiology',
-                'not-a-date', END_ISO, 'UTC', null
+                new GoogleCalendarModels.CreateEventInput(
+                    CAL_ID, 'John', 'Smith', 'Cardiology',
+                    'not-a-date', END_ISO, 'UTC', null
+                )
             );
         } catch (AuraHandledException ex) { caught = ex; }
 
@@ -73,8 +81,10 @@ private class GoogleCalendarControllerTest {
         Exception caught;
         try {
             GoogleCalendarController.createCalendarEvent(
-                CAL_ID, 'John', 'Smith', 'Cardiology',
-                START_ISO, 'not-a-date', 'UTC', null
+                new GoogleCalendarModels.CreateEventInput(
+                    CAL_ID, 'John', 'Smith', 'Cardiology',
+                    START_ISO, 'not-a-date', 'UTC', null
+                )
             );
         } catch (AuraHandledException ex) { caught = ex; }
 
@@ -87,8 +97,10 @@ private class GoogleCalendarControllerTest {
         Exception caught;
         try {
             GoogleCalendarController.createCalendarEvent(
-                CAL_ID, 'John', 'Smith', 'Cardiology',
-                END_ISO, START_ISO, 'UTC', null
+                new GoogleCalendarModels.CreateEventInput(
+                    CAL_ID, 'John', 'Smith', 'Cardiology',
+                    END_ISO, START_ISO, 'UTC', null
+                )
             );
         } catch (AuraHandledException ex) { caught = ex; }
 
@@ -101,8 +113,10 @@ private class GoogleCalendarControllerTest {
         Exception caught;
         try {
             GoogleCalendarController.createCalendarEvent(
-                CAL_ID, 'John', 'Smith', 'Cardiology',
-                START_ISO, START_ISO, 'UTC', null
+                new GoogleCalendarModels.CreateEventInput(
+                    CAL_ID, 'John', 'Smith', 'Cardiology',
+                    START_ISO, START_ISO, 'UTC', null
+                )
             );
         } catch (AuraHandledException ex) { caught = ex; }
 
@@ -118,8 +132,10 @@ private class GoogleCalendarControllerTest {
         Test.startTest();
         try {
             GoogleCalendarController.createCalendarEvent(
-                CAL_ID, 'John', 'Smith', 'Cardiology',
-                START_ISO, END_ISO, 'UTC', null
+                new GoogleCalendarModels.CreateEventInput(
+                    CAL_ID, 'John', 'Smith', 'Cardiology',
+                    START_ISO, END_ISO, 'UTC', null
+                )
             );
         } catch (AuraHandledException ex) { caught = ex; }
         Test.stopTest();
@@ -222,8 +238,10 @@ private class GoogleCalendarControllerTest {
         Test.startTest();
         try {
             GoogleCalendarController.createCalendarEvent(
-                CAL_ID, 'John', 'Smith', 'Cardiology',
-                START_ISO, END_ISO, 'UTC', null
+                new GoogleCalendarModels.CreateEventInput(
+                    CAL_ID, 'John', 'Smith', 'Cardiology',
+                    START_ISO, END_ISO, 'UTC', null
+                )
             );
         } catch (AuraHandledException ex) { caught = ex; }
         Test.stopTest();

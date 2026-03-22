@@ -6,8 +6,10 @@ private class GoogleCalendarControllerHelperTest {
         Exception caught;
         try {
             GoogleCalendarControllerHelper.validateCreateEventInputs(
-                'primary', 'John Doe', 'Smith', 'Cardiology',
-                '2026-03-21T10:00:00', '2026-03-21T11:00:00', 'UTC'
+                new GoogleCalendarModels.CreateEventInput(
+                    'primary', 'John Doe', 'Smith', 'Cardiology',
+                    '2026-03-21T10:00:00', '2026-03-21T11:00:00', 'UTC', null
+                )
             );
         } catch (Exception ex) { caught = ex; }
 
@@ -19,8 +21,10 @@ private class GoogleCalendarControllerHelperTest {
         Exception caught;
         try {
             GoogleCalendarControllerHelper.validateCreateEventInputs(
-                '', 'John Doe', 'Smith', 'Cardiology',
-                '2026-03-21T10:00:00', '2026-03-21T11:00:00', 'UTC'
+                new GoogleCalendarModels.CreateEventInput(
+                    '', 'John Doe', 'Smith', 'Cardiology',
+                    '2026-03-21T10:00:00', '2026-03-21T11:00:00', 'UTC', null
+                )
             );
         } catch (Exception ex) { caught = ex; }
 
@@ -33,8 +37,10 @@ private class GoogleCalendarControllerHelperTest {
         Exception caught;
         try {
             GoogleCalendarControllerHelper.validateCreateEventInputs(
-                '', 'John Doe', '', 'Cardiology',
-                '2026-03-21T10:00:00', '2026-03-21T11:00:00', 'UTC'
+                new GoogleCalendarModels.CreateEventInput(
+                    '', 'John Doe', '', 'Cardiology',
+                    '2026-03-21T10:00:00', '2026-03-21T11:00:00', 'UTC', null
+                )
             );
         } catch (Exception ex) { caught = ex; }
 
@@ -48,7 +54,9 @@ private class GoogleCalendarControllerHelperTest {
         Exception caught;
         try {
             GoogleCalendarControllerHelper.validateCreateEventInputs(
-                '', '', '', '', '', '', ''
+                new GoogleCalendarModels.CreateEventInput(
+                    '', '', '', '', '', '', '', null
+                )
             );
         } catch (Exception ex) { caught = ex; }
 
@@ -101,10 +109,12 @@ private class GoogleCalendarControllerHelperTest {
         Test.setMock(HttpCalloutMock.class, new MockHttpCallout(200, eventJson));
         Test.startTest();
         String link = GoogleCalendarControllerHelper.orchestrateCreateEvent(
-            'primary', 'John Doe', 'Smith', 'Cardiology',
+            new GoogleCalendarModels.CreateEventInput(
+                'primary', 'John Doe', 'Smith', 'Cardiology',
+                null, null, 'UTC', 'john@example.com'
+            ),
             DateTime.newInstanceGmt(2026, 3, 21, 10, 0, 0),
-            DateTime.newInstanceGmt(2026, 3, 21, 11, 0, 0),
-            'UTC', 'john@example.com'
+            DateTime.newInstanceGmt(2026, 3, 21, 11, 0, 0)
         );
         Test.stopTest();
 
