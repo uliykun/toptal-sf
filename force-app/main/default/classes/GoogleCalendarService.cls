@@ -1,10 +1,19 @@
 public with sharing class GoogleCalendarService {
 
-    @TestVisible private static final String NAMED_CREDENTIAL = 'Google_Calendar_API';
-    @TestVisible private static final String DEFAULT_TIMEZONE = 'UTC';
-    @TestVisible static final Integer WORK_START_HOUR = 9;
-    @TestVisible static final Integer WORK_END_HOUR = 17;
-    @TestVisible static final Integer SLOT_DURATION_MIN = 30;
+    @TestVisible private static String NAMED_CREDENTIAL;
+    @TestVisible private static String DEFAULT_TIMEZONE;
+    @TestVisible static Integer WORK_START_HOUR;
+    @TestVisible static Integer WORK_END_HOUR;
+    @TestVisible static Integer SLOT_DURATION_MIN;
+
+    static {
+        Calendar_Settings__mdt cfg = Calendar_Settings__mdt.getInstance('Default');
+        NAMED_CREDENTIAL = cfg.Named_Credential__c;
+        DEFAULT_TIMEZONE = cfg.Default_Timezone__c;
+        WORK_START_HOUR = Integer.valueOf(cfg.Work_Start_Hour__c);
+        WORK_END_HOUR = Integer.valueOf(cfg.Work_End_Hour__c);
+        SLOT_DURATION_MIN = Integer.valueOf(cfg.Slot_Duration_Min__c);
+    }
 
     private static final String EVENTS_PATH = '/calendar/v3/calendars/{0}/events';
     private static final String EVENT_RESOURCE_PATH = '/calendar/v3/calendars/{0}/events/{1}';
@@ -21,10 +30,7 @@ public with sharing class GoogleCalendarService {
         return parseAndAssertSuccess(callCreateEvent(calendarId, request.toJsonBody()));
     }
 
-    public static String listEventsRaw(
-            String calendarId,
-            String timeMinUtc,
-            String timeMaxUtc) {
+    public static String listEventsRaw(String calendarId,String timeMinUtc,String timeMaxUtc) {
 
         Utils.validateNotBlank(calendarId, 'Calendar ID');
         Utils.validateNotBlank(timeMinUtc, 'timeMin');
