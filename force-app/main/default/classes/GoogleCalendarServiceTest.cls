@@ -180,8 +180,7 @@ private class GoogleCalendarServiceTest {
         Exception caught;
         Test.startTest();
         try {
-            GoogleCalendarService.listEventsRaw(
-                CAL_ID, '2026-03-21T00:00:00Z', '2026-03-22T00:00:00Z');
+            GoogleCalendarService.listEventsRaw(CAL_ID, '2026-03-21T00:00:00Z', '2026-03-22T00:00:00Z');
         } catch (Exception ex) { caught = ex; }
         Test.stopTest();
 
@@ -255,7 +254,7 @@ private class GoogleCalendarServiceTest {
         GoogleCalendarModels.EventRequest req = GoogleCalendarService.buildEventRequest(
             'Jane', 'Jones', 'Dermatology', start, endDt, '', null);
 
-        Assert.areEqual(GoogleCalendarService.DEFAULT_TIMEZONE, req.start.timeZone);
+        Assert.areEqual(Calendar_Settings__mdt.getInstance('Default').Default_Timezone__c, req.start.timeZone);
     }
 
     @isTest
@@ -309,8 +308,9 @@ private class GoogleCalendarServiceTest {
         List<GoogleCalendarModels.TimeSlot> slots =
             GoogleCalendarService.getAvailableSlots(CAL_ID, '2026-03-21', 'UTC');
         Test.stopTest();
-        Integer expected = (GoogleCalendarService.WORK_END_HOUR - GoogleCalendarService.WORK_START_HOUR)
-            * 60 / GoogleCalendarService.SLOT_DURATION_MIN;
+        Calendar_Settings__mdt cfg = Calendar_Settings__mdt.getInstance('Default');
+        Integer expected = (Integer.valueOf(cfg.Work_End_Hour__c) - Integer.valueOf(cfg.Work_Start_Hour__c))
+            * 60 / Integer.valueOf(cfg.Slot_Duration_Min__c);
 
         Assert.areEqual(expected, slots.size());
         for (GoogleCalendarModels.TimeSlot s : slots) {

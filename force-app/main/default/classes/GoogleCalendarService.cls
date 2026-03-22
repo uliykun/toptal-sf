@@ -1,10 +1,10 @@
 public with sharing class GoogleCalendarService {
 
-    @TestVisible private static String NAMED_CREDENTIAL;
-    @TestVisible private static String DEFAULT_TIMEZONE;
-    @TestVisible static Integer WORK_START_HOUR;
-    @TestVisible static Integer WORK_END_HOUR;
-    @TestVisible static Integer SLOT_DURATION_MIN;
+    private static String NAMED_CREDENTIAL;
+    private static String DEFAULT_TIMEZONE;
+    private static Integer WORK_START_HOUR;
+    private static Integer WORK_END_HOUR;
+    private static Integer SLOT_DURATION_MIN;
 
     static {
         Calendar_Settings__mdt cfg = Calendar_Settings__mdt.getInstance('Default');
